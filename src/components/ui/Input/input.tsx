@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../../lib/utils";
 
 const customInputStyles =
   "font-[var(--font-family-mulish)] focus:border-[2px] focus:border-[var(--color-primary-400)] hover:border-[2px] hover:border-[var(--color-primary-400)] custom-input active:shadow-none";
