@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 #root {
@@ -160,4 +162,55 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  /* Neutral colors */
+  --color-neutrals-white: #ffffff;
+  --color-neutrals-100: #f2f5f7;
+  --color-neutrals-200: #a8aeb5;
+  --color-neutrals-300: #5a6066;
+  --color-neutrals-400: #44484c;
+  --color-neutrals-500: #2d3033;
+
+  /* Component background */
+  --color-component-background: #ffffff;
+
+  /* System background */
+  --color-system-background: #f2f5f7;
+
+  /* Uses (Neutrals) */
+  --color-uses-200: #a8aeb5;
+  --color-uses-300: #5a6066;
+  --color-uses-400: #44484c;
+  --color-uses-500: #2d3033;
+
+  /* Primary palette */
+  --color-primary-50: #ebeff6;
+  --color-primary-100: #b1bddb;
+  --color-primary-200: #627bb8;
+  --color-primary-300: #3b5aa6;
+  --color-primary-400: #293f74;
+  --color-primary-500: #182442;
+
+  /* Extended palette */
+  --color-success-green: #51ff4e;
+  --color-warning-yellow: #fff94e;
+  --color-error-red: #ff3131;
+  --color-extended-purple-default: #a88fef;
+  --color-extended-purple-hover: #c0b0f2;
+  --color-extended-lightgreen-default: #a7ef8f;
+  --color-extended-lightgreen-hover: #c2efb8;
+  --color-extended-yellow-default: #eaef8f;
+  --color-extended-yellow-hover: #ebefbd;
+  --color-extended-pink-default: #ef8fbd;
+  --color-extended-pink-hover: #eea7cc;
+
+  /* Extended gradients */
+  --color-extended-gradient-default: linear-gradient(90deg, #a88fef 0%, #a7ef8f 100%);
+  --color-extended-gradient-disabled: linear-gradient(90deg, #c0b0f2 0%, #c2efb8 100%);
+  --color-extended-gradient-fainted: linear-gradient(90deg, rgba(168, 143, 239, 0.4) 0%, rgba(167, 239, 143, 0.4) 100%);
+
+  /* Overlay */
+  --color-overlay-40: rgba(168, 161, 161, 0.4);
 }

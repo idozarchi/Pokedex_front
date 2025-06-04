@@ -22,17 +22,3 @@ export const Secondary: Story = {
     variant: "secondary",
   },
 };
-
-export const Destructive: Story = {
-  args: {
-    children: "Destructive Button",
-    variant: "destructive",
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    children: "Outline Button",
-    variant: "outline",
-  },
-};
