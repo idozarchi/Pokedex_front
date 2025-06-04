@@ -121,6 +121,10 @@
   }
 }
 
+input:focus::placeholder {
+  opacity: 0;
+}
+
 @theme {
   /* Neutral colors */
   --color-neutrals-white: #ffffff;
