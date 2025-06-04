@@ -5,49 +5,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -207,10 +164,44 @@
   --color-extended-pink-hover: #eea7cc;
 
   /* Extended gradients */
-  --color-extended-gradient-default: linear-gradient(90deg, #a88fef 0%, #a7ef8f 100%);
-  --color-extended-gradient-disabled: linear-gradient(90deg, #c0b0f2 0%, #c2efb8 100%);
-  --color-extended-gradient-fainted: linear-gradient(90deg, rgba(168, 143, 239, 0.4) 0%, rgba(167, 239, 143, 0.4) 100%);
+  --color-extended-gradient-default: linear-gradient(
+    90deg,
+    #a88fef 0%,
+    #a7ef8f 100%
+  );
+  --color-extended-gradient-disabled: linear-gradient(
+    90deg,
+    #c0b0f2 0%,
+    #c2efb8 100%
+  );
+  --color-extended-gradient-fainted: linear-gradient(
+    90deg,
+    rgba(168, 143, 239, 0.4) 0%,
+    rgba(167, 239, 143, 0.4) 100%
+  );
 
   /* Overlay */
   --color-overlay-40: rgba(168, 161, 161, 0.4);
+
+  /* Typography */
+  --font-family-mulish: "Mulish, sans-serif";
+
+  --font-size-xl: 28px;
+  --line-height-xl: 37px;
+  --font-size-lg: 24px;
+  --line-height-lg: 34px;
+  --font-size-md: 18px;
+  --line-height-md: 27px;
+  --font-size-base: 16px;
+  --line-height-base: 24px;
+  --font-size-sm: 14px;
+  --line-height-sm: 22px;
+  --font-size-xs: 12px;
+  --line-height-xs: 19px;
+  --font-size-2xs: 11px;
+  --line-height-2xs: 16px;
+
+  --font-weight-bold: 700;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
 }
