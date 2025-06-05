@@ -18,6 +18,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Input } from "../Input/input";
+import { Search } from "lucide-react";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "UI/DropdownMenu",
@@ -171,14 +172,39 @@ export const WithInput: Story = {
         <DropdownMenuContent>
           <div className="p-2">
             <Input
-              placeholder="Type here..."
+              placeholder="Search"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               className="w-full"
+              startIcon={<Search size={16} />}
+              endComponent={
+                value ? (
+                  <button onClick={() => setValue("")}>
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
+                      <path
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4 4l8 8M12 4l-8 8"
+                      />
+                    </svg>
+                  </button>
+                ) : null
+              }
             />
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Regular Item</DropdownMenuItem>
+          <DropdownMenuItem>
+            <User size={16} /> Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Settings size={16} /> Settings
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive">
+            <LogOut size={16} /> Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
