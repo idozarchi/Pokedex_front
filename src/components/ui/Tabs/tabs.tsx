@@ -1,30 +1,53 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-
 import { cn } from "../../..//lib/utils";
+
+type TabsProps = React.ComponentProps<typeof TabsPrimitive.Root> & {
+  direction?: "row" | "col";
+  spacing?: string; // e.g., "gap-2", "gap-4"
+};
 
 function Tabs({
   className,
+  direction = "row",
+  spacing = "gap-2",
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+}: TabsProps) {
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn(
+        "flex",
+        direction === "row" ? "flex-col" : "flex-row",
+        spacing,
+        className
+      )}
       {...props}
     />
   );
 }
 
+type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
+  direction?: "row" | "col";
+  spacing?: string;
+  divider?: boolean;
+};
+
 function TabsList({
   className,
+  direction = "row",
+  spacing = "gap-2",
+  divider = false,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+}: TabsListProps) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        "inline-flex items-center justify-center w-fit h-9 p-[3px]",
+        direction === "row" ? "flex-row" : "flex-col",
+        spacing,
+        divider ? "border-b border-input" : "",
         className
       )}
       {...props}
@@ -36,15 +59,46 @@ function TabsTrigger({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const ref = React.useRef<HTMLButtonElement>(null);
+
+  // We'll use a state to track if this tab is active
+  const [isActive, setIsActive] = React.useState(false);
+
+  React.useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    // Listen for attribute changes (Radix sets data-state="active")
+    const observer = new MutationObserver(() => {
+      setIsActive(node.getAttribute("data-state") === "active");
+    });
+    observer.observe(node, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+    // Set initial state
+    setIsActive(node.getAttribute("data-state") === "active");
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <TabsPrimitive.Trigger
+      ref={ref}
       data-slot="tabs-trigger"
       className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative bg-transparent text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-sm px-2 py-1 text-sm font-medium whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4",
+        "hover:bg-[var(--color-primary-50)]",
         className
       )}
       {...props}
-    />
+    >
+      {props.children}
+      {isActive && (
+        <span
+          className="absolute left-2 right-2 bottom-0 h-[3px] rounded bg-[var(--color-primary-400)]"
+          aria-hidden="true"
+        />
+      )}
+    </TabsPrimitive.Trigger>
   );
 }
 
