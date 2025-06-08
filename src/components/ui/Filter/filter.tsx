@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -33,7 +33,7 @@ export const Filter: React.FC<FilterProps> = ({
   onChange,
   label = "Filter",
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const selected = options.find((opt) => opt.value === value);
 
@@ -43,7 +43,7 @@ export const Filter: React.FC<FilterProps> = ({
     : "";
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button className={buttonClass + " relative"}>
           <span className="flex items-center pointer-events-none">
@@ -73,7 +73,7 @@ export const Filter: React.FC<FilterProps> = ({
                 </svg>
               </span>
             )}
-            {open ? (
+            {isOpen ? (
               <ChevronUp size={16} className="ml-2" />
             ) : (
               <ChevronDown size={16} className="ml-2" />
