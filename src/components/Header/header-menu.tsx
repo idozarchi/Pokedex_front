@@ -6,26 +6,32 @@ import {
   NavigationMenuLink,
 } from "../ui/NavigationMenu/navigation-menu";
 
-export const HeaderMenu: React.FC = () => (
+type MenuItem = {
+  name: string;
+  href: string;
+  isActive?: boolean;
+};
+
+type HeaderMenuProps = {
+  items: MenuItem[];
+};
+
+export const HeaderMenu: React.FC<HeaderMenuProps> = ({ items }) => (
   <NavigationMenu>
     <NavigationMenuList>
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/pokemons"
-          className="text-[var(--color-primary-300)] font-bold"
-          aria-current="page"
-        >
-          All Pokemons
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/my-pokemons"
-          className="text-[var(--color-primary-300)]"
-        >
-          My Pokemons
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+      {items.map((item) => (
+        <NavigationMenuItem key={item.href}>
+          <NavigationMenuLink
+            href={item.href}
+            className={`text-[var(--color-primary-300)]${
+              item.isActive ? " font-bold text-[var(--color-primary-400)]" : ""
+            }`}
+            aria-current={item.isActive ? "page" : undefined}
+          >
+            {item.name}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      ))}
     </NavigationMenuList>
   </NavigationMenu>
 );
