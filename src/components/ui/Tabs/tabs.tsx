@@ -4,22 +4,28 @@ import { cn } from "../../..//lib/utils";
 
 type TabsProps = React.ComponentProps<typeof TabsPrimitive.Root> & {
   direction?: "row" | "col";
-  spacing?: string; // e.g., "gap-2", "gap-4"
+  spacing?: "spacing-1" | "spacing-2" | "spacing-3" | "spacing-4" | "spacing-6" | "spacing-8" | "spacing-12" | "spacing-16" | string;
 };
 
 function Tabs({
   className,
   direction = "row",
-  spacing = "gap-2",
+  spacing = "spacing-2",
   ...props
 }: TabsProps) {
+  // Use the CSS variable for spacing if a known key is provided
+  const spacingClass =
+    spacing.startsWith("spacing-")
+      ? `gap-[var(--${spacing})]`
+      : spacing;
+
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
       className={cn(
         "flex",
         direction === "row" ? "flex-col" : "flex-row",
-        spacing,
+        spacingClass,
         className
       )}
       {...props}
@@ -29,24 +35,29 @@ function Tabs({
 
 type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
   direction?: "row" | "col";
-  spacing?: string;
+  spacing?: "spacing-1" | "spacing-2" | "spacing-3" | "spacing-4" | "spacing-6" | "spacing-8" | "spacing-12" | "spacing-16" | string;
   divider?: boolean;
 };
 
 function TabsList({
   className,
   direction = "row",
-  spacing = "gap-2",
+  spacing = "spacing-2",
   divider = false,
   ...props
 }: TabsListProps) {
+  const spacingClass =
+    spacing.startsWith("spacing-")
+      ? `gap-[var(--${spacing})]`
+      : spacing;
+
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
         "inline-flex items-center justify-center w-fit h-9 p-[3px]",
         direction === "row" ? "flex-row" : "flex-col",
-        spacing,
+        spacingClass,
         divider ? "border-b border-input" : "",
         className
       )}
