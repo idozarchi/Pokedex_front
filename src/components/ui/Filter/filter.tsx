@@ -24,14 +24,14 @@ type FilterProps = {
   options: FilterOption[];
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string;
+  label?: string; // This will be used for the dropdown label and placeholder
 };
 
 export const Filter: React.FC<FilterProps> = ({
   options,
   value,
   onChange,
-  label = "Filter",
+  label = "Filter", // Default to "Filter" if not provided
 }) => {
   const [open, setOpen] = React.useState(false);
 
