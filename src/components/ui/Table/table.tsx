@@ -10,6 +10,7 @@ function TableFooter({
   total = 0,
   onPageChange,
   onPageSizeChange,
+  rowsPerPageOptions = [10, 20, 50, 100], // <-- Add default prop
   ...props
 }: React.ComponentProps<"tfoot"> & {
   page?: number;
@@ -17,6 +18,7 @@ function TableFooter({
   total?: number;
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
+  rowsPerPageOptions?: number[]; // <-- Add prop type
 }) {
   return (
     <tfoot
@@ -33,7 +35,7 @@ function TableFooter({
             <RowsPerPageDropdown
               value={pageSize}
               onChange={onPageSizeChange || (() => {})}
-              options={[10, 20, 50, 100]}
+              options={rowsPerPageOptions} // <-- Use prop here
             />
             <div className="ml-auto">
               <PaginationInfo
