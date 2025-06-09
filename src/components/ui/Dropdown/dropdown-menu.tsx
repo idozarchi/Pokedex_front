@@ -29,7 +29,7 @@ function DropdownMenuTrigger({
     <DropdownMenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
       className={cn(
-        "bg-[var(--color-component-background)] text-black border border-[var(--color-primary-300)] hover:border-2 hover:border-[var(--color-primary-400)] hover:bg-[var(--color-component-background)] transition-colors shadow-none hover:shadow-none focus:shadow-none active:shadow-none",
+        "bg-transparent text-black border border-[var(--color-primary-300)] hover:border-2 hover:border-[var(--color-primary-400)] hover:bg-[var(--color-component-background)] transition-colors shadow-none hover:shadow-none focus:shadow-none active:shadow-none",
         error
           ? "border-destructive hover:border-2 hover:border-destructive"
           : "border-[var(--color-primary-300)] hover:border-2 hover:border-[var(--color-primary-400)]",

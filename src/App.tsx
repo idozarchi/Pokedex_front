@@ -1,8 +1,14 @@
 import "./App.css";
-import { Button } from "./components/ui/Button/button";
+import { Header } from "./components/Header/header"; // Adjust the path if needed
+import AllPokemonsPage from "./pages/all-pokemons";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Header />
+      <AllPokemonsPage />
+    </>
+  );
 }
 
 export default App;

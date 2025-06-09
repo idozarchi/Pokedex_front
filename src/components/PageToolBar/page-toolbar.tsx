@@ -26,7 +26,7 @@ export const PageToolbar = ({
 }: PageToolbarProps) => (
   <div className={`w-full mb-8 ${className}`}>
     <Headline className="mb-4">{title}</Headline>
-    <div className="flex items-center justify-between bg-white rounded-md">
+    <div className="flex items-center justify-between bg-transparent rounded-md">
       <Searchbar
         placeholder="Search..."
         value={searchValue}

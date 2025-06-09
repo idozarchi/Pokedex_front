@@ -8,7 +8,7 @@ import { Button } from "../ui/Button/button";
 // - Attach actual pages/routes to menu items in HeaderMenu
 
 export const Header: React.FC = () => (
-  <header className="w-full flex items-center justify-center px-6 py-3 bg-white border-b">
+  <header className="w-full flex items-center justify-center px-6 py-0 bg-white border-b">
     <div className="flex items-center gap-6 flex-shrink-0">
       <HeaderLogo src="/header_logo.png" alt="Pokédex Logo" />{" "}
       <HeaderMenu

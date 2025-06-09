@@ -11,7 +11,6 @@ import { Button } from "../Button/button";
 import {
   ChevronDown,
   ChevronUp,
-  Filter as FilterIcon,
   Calendar as DateRangeIcon,
 } from "lucide-react";
 
@@ -27,12 +26,12 @@ type FilterProps = {
   label?: string; // This will be used for the dropdown label and placeholder
 };
 
-export const Filter: React.FC<FilterProps> = ({
+export function Filter({
   options,
   value,
   onChange,
-  label = "Filter", // Default to "Filter" if not provided
-}) => {
+  label = "Filter",
+}: FilterProps) {
   const [open, setOpen] = React.useState(false);
 
   const selected = options.find((opt) => opt.value === value);
@@ -95,4 +94,4 @@ export const Filter: React.FC<FilterProps> = ({
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

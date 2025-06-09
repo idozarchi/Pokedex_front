@@ -6,7 +6,6 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
-  PaginationEllipsis,
   PaginationInfo, // <-- Import the PaginationInfo component
 } from "./pagination";
 import { useState } from "react";
