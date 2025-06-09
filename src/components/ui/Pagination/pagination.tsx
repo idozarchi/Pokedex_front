@@ -1,13 +1,8 @@
 import * as React from "react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import { cn } from "../../../lib/utils";
 import { Button, buttonVariants } from "../Button/button";
-// adjust path if needed
 
 type PaginationInfoProps = {
   page: number;
@@ -31,7 +26,7 @@ export function PaginationInfo({
 
   return (
     <div className={cn("flex items-center w-full", className)}>
-      <span className="text-sm text-muted-foreground mr-2">
+      <span className="text-xs text-muted-foreground mr-2">
         {start}-{end} of {total} items
       </span>
       <div className="flex items-center gap-0">
@@ -150,23 +145,6 @@ function PaginationNext({
   );
 }
 
-function PaginationEllipsis({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
-  return (
-    <span
-      aria-hidden
-      data-slot="pagination-ellipsis"
-      className={cn("flex size-9 items-center justify-center", className)}
-      {...props}
-    >
-      <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">More pages</span>
-    </span>
-  );
-}
-
 export {
   Pagination,
   PaginationContent,
@@ -174,5 +152,4 @@ export {
   PaginationItem,
   PaginationPrevious,
   PaginationNext,
-  PaginationEllipsis,
 };

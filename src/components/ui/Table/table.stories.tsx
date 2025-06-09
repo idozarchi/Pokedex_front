@@ -59,7 +59,7 @@ export const Default: Story = {
       <div className="p-8 bg-white">
         <Table>
           <TableCaption>A list of Pokémon and their types.</TableCaption>
-          <TableHeader className="-primary-50">
+          <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
               <TableHead>Name</TableHead>
