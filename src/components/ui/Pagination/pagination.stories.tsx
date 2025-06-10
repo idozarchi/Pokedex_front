@@ -38,9 +38,7 @@ export const Default: Story = {
           <PaginationItem>
             <PaginationLink href="#">3</PaginationLink>
           </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+          <PaginationItem></PaginationItem>
           <PaginationItem>
             <PaginationLink href="#">8</PaginationLink>
           </PaginationItem>

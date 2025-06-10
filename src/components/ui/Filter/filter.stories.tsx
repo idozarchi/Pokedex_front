@@ -17,9 +17,6 @@ export const Default: Story = {
     return (
       <div className="p-8">
         <Filter
-<<<<<<< HEAD
-          label="Type"
-=======
           label="Filter type"
           options={[
             { label: "All", value: "all" },
@@ -43,7 +40,6 @@ export const Preselected: Story = {
       <div className="p-8">
         <Filter
           label="Filter type"
->>>>>>> feature/dropdown
           options={[
             { label: "All", value: "all" },
             { label: "Fire", value: "fire" },
@@ -58,27 +54,6 @@ export const Preselected: Story = {
   },
 };
 
-<<<<<<< HEAD
-export const Preselected: Story = {
-  render: () => {
-    const [value, setValue] = React.useState<string | null>("fire");
-    return (
-      <div className="p-8">
-        <Filter
-          label="Type"
-          options={[
-            { label: "All", value: "all" },
-            { label: "Fire", value: "fire" },
-            { label: "Water", value: "water" },
-            { label: "Grass", value: "grass" },
-          ]}
-          value={value}
-          onChange={setValue}
-        />
-      </div>
-    );
-  },
-=======
 export const Disabled: Story = {
   render: () => (
     <div className="p-8">
@@ -95,7 +70,6 @@ export const Disabled: Story = {
       />
     </div>
   ),
->>>>>>> feature/dropdown
 };
 
 export const CustomLabel: Story = {
