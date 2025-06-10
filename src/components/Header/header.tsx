@@ -1,6 +1,7 @@
 import HeaderLogo from "./header-logo";
 import HeaderMenu from "./header-menu";
 import { Button } from "../ui/Button/button";
+import { HEADER_LOGO_SRC } from "../../constants/header";
 
 // TODO:
 // - Attach functionality for "Start a Fight" button (e.g., open modal, navigate, etc.)
@@ -8,9 +9,9 @@ import { Button } from "../ui/Button/button";
 
 export function Header() {
   return (
-    <header className="w-full flex items-center justify-center px-6 py-0 bg-white border-b">
+    <header className="w-full flex items-center justify-between px-6 py-3 bg-white border-b">
       <div className="flex items-center gap-6 flex-shrink-0">
-        <HeaderLogo src="/header_logo.png" alt="Pokédex Logo" />
+        <HeaderLogo src={HEADER_LOGO_SRC} alt="Pokédex Logo" />
         <HeaderMenu
           items={[
             { name: "All Pokémons", href: "/pokemons", isActive: true },
@@ -18,7 +19,6 @@ export function Header() {
           ]}
         />
       </div>
-      <div className="flex-1" />
       <Button>Start a Fight</Button>
     </header>
   );

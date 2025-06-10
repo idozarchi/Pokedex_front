@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,6 +13,7 @@ import {
   ChevronUp,
   Calendar as DateRangeIcon,
 } from "lucide-react";
+import { ClearIcon } from "../../../assets/ClearIcon";
 
 type FilterOption = {
   label: string;
@@ -32,20 +33,21 @@ export function Filter({
   onChange,
   label = "Filter",
 }: FilterProps) {
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const selected = options.find((opt) => opt.value === value);
+
   const isSelected = !!selected;
   const buttonClass = isSelected
-    ? "bg-[var(--color-primary-100)] text-[var(--color-primary-300)]"
+    ? "bg-[var(--color-primary-50)] text-[var(--color-primary-300)]"
     : "";
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button className={buttonClass + " relative"}>
           <span className="flex items-center pointer-events-none">
-            <DateRangeIcon size={16} className="mr-2" />
+            <DateRangeIcon size={16} className="mr-2" />{" "}
             {selected ? selected.label : label}
             {isSelected && (
               <span
@@ -60,18 +62,10 @@ export function Filter({
                 role="button"
                 aria-label="Clear filter"
               >
-                <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
-                  <path
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 4l8 8M12 4l-8 8"
-                  />
-                </svg>
+                <ClearIcon />
               </span>
             )}
-            {open ? (
+            {isOpen ? (
               <ChevronUp size={16} className="ml-2" />
             ) : (
               <ChevronDown size={16} className="ml-2" />
