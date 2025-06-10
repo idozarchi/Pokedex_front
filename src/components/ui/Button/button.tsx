@@ -4,10 +4,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../../lib/utils";
 
-const primaryStyles =
-  "bg-primary-300 text-white shadow-xs hover:bg-primary-400 active:bg-primary-500 disabled:bg-primary-50";
-const secondaryStyles =
-  "bg-primary-50 text-primary-500 shadow-xs hover:bg-primary-100 active:bg-primary-200 disabled:bg-primary-50";
 const sizeSmall = "h-[32px] px-3 py-1.5 text-sm";
 const sizeMedium = "h-[36px] px-4 py-2 text-base";
 const sizeLarge = "h-[40px] px-6 py-3 text-lg";
@@ -17,8 +13,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: primaryStyles,
-        secondary: secondaryStyles,
+        primary:
+          "bg-primary-300 text-white shadow-xs hover:bg-primary-400 active:bg-primary-500 disabled:bg-primary-50",
+        secondary:
+          "bg-primary-50 text-primary-500 shadow-xs hover:bg-primary-100 active:bg-primary-200 disabled:bg-primary-50",
       },
       size: {
         sm: sizeSmall,
@@ -33,16 +31,18 @@ const buttonVariants = cva(
   }
 );
 
+type ButtonProps = React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  };
+
 function Button({
   className,
   variant,
   size,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : "button";
 
   return (
@@ -54,4 +54,4 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+export { Button, buttonVariants, type ButtonProps };
