@@ -10,7 +10,7 @@ type PageToolbarProps = {
   filterOptions: Array<{ label: string; value: string }>;
   filterValue: string | null;
   onFilterChange: (value: string | null) => void;
-  filterLabel?: string; // <-- Added prop
+  filterLabel?: string;
   className?: string;
 };
 
@@ -37,7 +37,7 @@ export const PageToolbar = ({
         options={filterOptions}
         value={filterValue}
         onChange={onFilterChange}
-        label={filterLabel} // <-- Use the prop here
+        label={filterLabel}
       />
     </div>
   </div>
