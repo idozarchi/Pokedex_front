@@ -208,4 +208,18 @@ input:focus::placeholder {
   --font-weight-bold: 700;
   --font-weight-medium: 500;
   --font-weight-regular: 400;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-gap-2: 0.5rem;   /* gap-2 */
+  --spacing-gap-4: 1rem;     /* gap-4 */
+  --spacing-gap-6: 1.5rem;   /* gap-6 */
+  --spacing-gap-8: 2rem;     /* gap-8 */
 }
