@@ -11,7 +11,6 @@ import { Button } from "../Button/button";
 import {
   ChevronDown,
   ChevronUp,
-  Filter as FilterIcon,
   Calendar as DateRangeIcon,
 } from "lucide-react";
 import { ClearIcon } from "../../../assets/ClearIcon";
