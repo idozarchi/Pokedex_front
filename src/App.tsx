@@ -9,6 +9,7 @@ import {
 import { Header } from "./components/Header/header";
 import AllPokemonsPage from "./pages/all-pokemons";
 import MyPokemonsPage from "./pages/my-pokemons";
+import ArenaPage from "./pages/arena-page";
 
 const AppContent = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/all-pokemons" element={<AllPokemonsPage />} />
         <Route path="/my-pokemons" element={<MyPokemonsPage />} />
+        <Route path="/arena" element={<ArenaPage />} />
         <Route path="*" element={<Navigate to="/all-pokemons" replace />} />
       </Routes>
     </>

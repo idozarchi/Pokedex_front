@@ -24,7 +24,8 @@ type FilterProps = {
   options: FilterOption[];
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string; // This will be used for the dropdown label and placeholder
+  label?: string;
+  showDateRangeIcon?: boolean;
 };
 
 export function Filter({
@@ -32,6 +33,7 @@ export function Filter({
   value,
   onChange,
   label = "Filter",
+  showDateRangeIcon = true,
 }: FilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -47,7 +49,7 @@ export function Filter({
       <DropdownMenuTrigger asChild>
         <Button className={buttonClass + " relative"}>
           <span className="flex items-center pointer-events-none">
-            <DateRangeIcon size={16} className="mr-2" />{" "}
+            {showDateRangeIcon && <DateRangeIcon size={16} className="mr-2" />}{" "}
             {selected ? selected.label : label}
             {isSelected && (
               <span

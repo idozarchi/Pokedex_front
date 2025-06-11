@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Headline } from "./headline";
+import { Headline } from "../Headline/headline";
 import { Searchbar } from "../ui/Searchbar/searchbar";
 import { Filter } from "../ui/Filter/filter";
 
@@ -25,7 +25,7 @@ export const PageToolbar = ({
   className = "",
 }: PageToolbarProps) => (
   <div className={`w-full mb-8 ${className}`}>
-    <Headline className="mb-4">{title}</Headline>
+    <Headline className="text-2xl mb-4">{title}</Headline>
     <div className="flex items-center justify-between bg-transparent rounded-md">
       <Searchbar
         placeholder="Search..."
