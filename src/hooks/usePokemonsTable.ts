@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { fetchPokemons, type Pokemon } from "../api/fetchPokemons";
 import { sortPokemons } from "../utils/sortPokemons";
 
-export function usePokemonsTable() {
+export function usePokemonsTable(
+  fetchFn: (limit: number) => Promise<{ results: Pokemon[] }> = fetchPokemons
+) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -12,11 +14,11 @@ export function usePokemonsTable() {
 
   useEffect(() => {
     setLoading(true);
-    fetchPokemons(100).then((data) => {
+    fetchFn(100).then((data) => {
       setPokemons(data.results);
       setLoading(false);
     });
-  }, []);
+  }, [fetchFn]);
 
   let filteredPokemons = searchValue
     ? pokemons.filter((pokemon) =>

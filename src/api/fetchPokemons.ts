@@ -63,3 +63,19 @@ export async function fetchPokemons(
     results: allPokemons.slice(0, amount),
   };
 }
+
+export async function fetchMyPokemons(
+  amount: number
+): Promise<FetchPokemonsResponse> {
+  const res = await fetch("/my-pokemons.json");
+  if (!res.ok) {
+    throw new Error("Failed to fetch Pokémon");
+  }
+  const data = await res.json();
+  const allPokemons: Pokemon[] = data.results || data;
+
+  return {
+    count: allPokemons.length,
+    results: allPokemons.slice(0, amount),
+  };
+}
