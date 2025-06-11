@@ -20,7 +20,7 @@ export async function fetchPokemons(
     throw new Error("Failed to fetch Pokémon");
   }
   const data = await res.json();
-  const allPokemons: Pokemon[] = data.results || data;
+  const allPokemons: Pokemon[] = data || [];
 
   return {
     count: allPokemons.length,

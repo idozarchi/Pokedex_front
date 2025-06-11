@@ -6,8 +6,7 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
-  PaginationEllipsis,
-  PaginationInfo, // <-- Import the PaginationInfo component
+  PaginationInfo,
 } from "./pagination";
 import { useState } from "react";
 
@@ -39,9 +38,7 @@ export const Default: Story = {
           <PaginationItem>
             <PaginationLink href="#">3</PaginationLink>
           </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+          <PaginationItem></PaginationItem>
           <PaginationItem>
             <PaginationLink href="#">8</PaginationLink>
           </PaginationItem>
