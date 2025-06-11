@@ -4,7 +4,6 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-  CardFooter,
 } from "../ui/Card/card";
 import { Separator } from "../ui/Separator/separator";
 import { ClearIcon } from "../../assets/ClearIcon";

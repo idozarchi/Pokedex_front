@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { type Pokemon } from "../../api/fetchPokemons";
 import { TableCell, TableRow } from "../ui/Table/table";
 import { PokemonLogo } from "../PokemonLogo/PokemonLogo";
