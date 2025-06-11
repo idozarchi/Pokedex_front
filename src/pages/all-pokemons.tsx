@@ -10,6 +10,7 @@ import {
 } from "../components/ui/Table/table";
 import { usePokemonsTable } from "../hooks/usePokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
+import { ALL_POKEMONS_PAGE } from "../constants/strings";
 
 export default function AllPokemonsPage() {
   const {
@@ -29,15 +30,10 @@ export default function AllPokemonsPage() {
   return (
     <div className="p-14 bg-neutral-100 min-h-screen">
       <PageToolbar
-        title="All Pokémons"
+        title={ALL_POKEMONS_PAGE.TITLE}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        filterOptions={[
-          { label: "Name", value: "name" },
-          { label: "ID", value: "id" },
-          { label: "Power Level", value: "power" },
-          { label: "HP Level", value: "hp" },
-        ]}
+        filterOptions={ALL_POKEMONS_PAGE.FILTER_OPTIONS}
         filterValue={filterValue}
         filterLabel="Sort By"
         onFilterChange={setFilterValue}
@@ -45,13 +41,11 @@ export default function AllPokemonsPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-4 text-center">Pokemon Name</TableHead>
-            <TableHead className="px-4 text-center">ID</TableHead>
-            <TableHead className="px-4 max-w-[544px] text-center">
-              Description
-            </TableHead>
-            <TableHead className="px-4 text-center">Power Level</TableHead>
-            <TableHead className="px-4 text-center">HP Level</TableHead>
+            {ALL_POKEMONS_PAGE.TABLE_HEADS.map((head) => (
+              <TableHead key={head.value} className="px-4 text-center">
+                {head.label}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>

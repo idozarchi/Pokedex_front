@@ -8,7 +8,7 @@ type PokemonTableRowProps = {
 
 export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
   return (
-    <TableRow className="bg-neutrals-white" key={pokemon.id}>
+    <TableRow className="bg-neutrals-white" key={pokemon?.id}>
       <TableCell className="px-4 text-center flex items-center justify-begin gap-2">
         <PokemonLogo imgSrc={pokemon.image?.sprite || ""} />
         {pokemon.name.english}
@@ -16,7 +16,7 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
       <TableCell className="px-4 text-center">{pokemon.id}</TableCell>
       <TableCell
         className="px-4 max-w-[544px] truncate whitespace-nowrap overflow-hidden text-center"
-        title={pokemon.description}
+        title={pokemon.description ? pokemon.description : "No data available"}
       >
         {pokemon.description}
       </TableCell>

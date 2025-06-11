@@ -1,6 +1,7 @@
-import * as React from "react";
 import { Input } from "../Input/input";
 import { Search } from "lucide-react";
+import Icon from "../Icon/icon";
+import { ClearIcon } from "../../../assets/ClearIcon";
 
 type SearchbarProps = {
   value: string;
@@ -42,15 +43,7 @@ export const Searchbar = ({
         className="absolute right-2 inset-y-0 my-auto p-0 m-0 bg-transparent border-0 cursor-pointer flex items-center"
         style={{ lineHeight: 0, height: "fit-content" }}
       >
-        <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
-          <path
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 4l8 8M12 4l-8 8"
-          />
-        </svg>
+        <Icon svg={<ClearIcon />}></Icon>
       </button>
     )}
   </div>

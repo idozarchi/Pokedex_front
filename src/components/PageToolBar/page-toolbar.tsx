@@ -2,6 +2,7 @@ import * as React from "react";
 import { Headline } from "./headline";
 import { Searchbar } from "../ui/Searchbar/searchbar";
 import { Filter } from "../ui/Filter/filter";
+import { PAGE_TOOLBAR } from "../../constants/strings";
 
 type PageToolbarProps = {
   title: React.ReactNode;
@@ -21,14 +22,16 @@ export const PageToolbar = ({
   filterOptions,
   filterValue,
   onFilterChange,
-  filterLabel = "Filter", // <-- Default value
+  filterLabel = PAGE_TOOLBAR.FILTER_LABEL,
   className = "",
 }: PageToolbarProps) => (
   <div className={`w-full mb-8 ${className}`}>
-    <Headline className="mb-4">{title}</Headline>
-    <div className="flex items-center justify-between bg-transparent rounded-md">
+    <Headline className="mb-4">
+      {typeof title === "string" ? <span>{title}</span> : title}
+    </Headline>
+    <div className="flex items-center justify-between rounded-md">
       <Searchbar
-        placeholder="Search..."
+        placeholder={PAGE_TOOLBAR.SEARCH_PLACEHOLDER}
         value={searchValue}
         onChange={onSearchChange}
         size="md"

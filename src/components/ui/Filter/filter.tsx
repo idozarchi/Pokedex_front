@@ -14,6 +14,7 @@ import {
   Calendar as DateRangeIcon,
 } from "lucide-react";
 import { ClearIcon } from "../../../assets/ClearIcon";
+import Icon from "../Icon/icon";
 
 type FilterOption = {
   label: string;
@@ -24,7 +25,7 @@ type FilterProps = {
   options: FilterOption[];
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string; // This will be used for the dropdown label and placeholder
+  label?: string;
 };
 
 export function Filter({
@@ -62,7 +63,7 @@ export function Filter({
                 role="button"
                 aria-label="Clear filter"
               >
-                <ClearIcon />
+                <Icon svg={<ClearIcon />}></Icon>
               </span>
             )}
             {isOpen ? (
