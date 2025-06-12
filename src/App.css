@@ -168,15 +168,15 @@ input:focus::placeholder {
   --color-extended-pink-hover: #eea7cc;
 
   /* Extended gradients */
-  --color-extended-gradient-default: linear-gradient(
-    90deg,
-    #a88fef 0%,
-    #a7ef8f 100%
-  );
   --color-extended-gradient-disabled: linear-gradient(
     90deg,
-    #c0b0f2 0%,
-    #c2efb8 100%
+    #5be2f7 0%,
+    #50dda0 100%
+  );
+  --color-extended-gradient-default: linear-gradient(
+    90deg,
+    #5be2f7 0%,
+    #50dda0 100%
   );
   --color-extended-gradient-fainted: linear-gradient(
     90deg,
@@ -210,16 +210,23 @@ input:focus::placeholder {
   --font-weight-regular: 400;
 
   /* Spacing */
-  --spacing-1: 0.25rem;   /* 4px */
-  --spacing-2: 0.5rem;    /* 8px */
-  --spacing-3: 0.75rem;   /* 12px */
-  --spacing-4: 1rem;      /* 16px */
-  --spacing-6: 1.5rem;    /* 24px */
-  --spacing-8: 2rem;      /* 32px */
-  --spacing-12: 3rem;     /* 48px */
-  --spacing-16: 4rem;     /* 64px */
-  --spacing-gap-2: 0.5rem;   /* gap-2 */
-  --spacing-gap-4: 1rem;     /* gap-4 */
-  --spacing-gap-6: 1.5rem;   /* gap-6 */
-  --spacing-gap-8: 2rem;     /* gap-8 */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-gap-2: 0.5rem; /* gap-2 */
+  --spacing-gap-4: 1rem; /* gap-4 */
+  --spacing-gap-6: 1.5rem; /* gap-6 */
+  --spacing-gap-8: 2rem; /* gap-8 */
+}
+
+.bg-extended-gradient-default {
+  background: var(--color-extended-gradient-default);
+}
+.bg-extended-gradient-disabled {
+  background: var(--color-extended-gradient-disabled);
 }

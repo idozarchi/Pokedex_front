@@ -15,7 +15,7 @@ type HeaderProps = {
 
 export function Header({ items }: HeaderProps) {
   return (
-    <header className="w-full flex items-center justify-between px-6 py-3 bg-white border-b">
+    <header className="w-full flex items-center justify-between px-6 bg-white border-b h-22">
       <div className="flex items-center gap-6 flex-shrink-0">
         <HeaderLogo src={HEADER_LOGO_SRC} alt="Pokédex Logo" />
         <HeaderMenu items={items} />
