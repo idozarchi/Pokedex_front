@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Arena from "../components/Arena/arena";
 import { ArenaHeader } from "../components/ArenaHeader/areana-header";
 import PreFight from "../components/PreFight/pre-fight";
@@ -7,6 +8,9 @@ import { PREFIGHT_BACKGROUND_SRC } from "../constants/header";
 // All strings and constants are imported from the constants file when it will merged
 
 export default function ArenaPage() {
+  const location = useLocation();
+  const opponent = location.state?.opponent;
+  const user = location.state?.user;
   const [showPreFight, setShowPreFight] = useState(true);
 
   useEffect(() => {
@@ -26,31 +30,49 @@ export default function ArenaPage() {
           <PreFight
             className="w-full h-[90%]"
             imageUrl={PREFIGHT_BACKGROUND_SRC}
-            champion1Url={
-              "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/025.png"
+            opponentUrl={
+              opponent?.image?.hires ||
+              opponent?.image?.thumbnail ||
+              opponent?.image?.sprite ||
+              ""
             }
-            champion2Url={
-              "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+            userUrl={
+              user?.image?.hires ||
+              user?.image?.thumbnail ||
+              user?.image?.sprite ||
+              ""
             }
           />
         ) : (
           <Arena
             className="w-full h-[90%]"
             champion1Data={{
-              name: "Bulbazar",
-              speed: 60,
-              progress: 75,
-              maxProgress: 340,
+              name:
+                typeof opponent?.name === "string"
+                  ? opponent?.name
+                  : opponent?.name?.english,
+              speed: opponent?.base?.Speed || 0,
+              progress: 100,
+              maxProgress: opponent?.base?.HP || 0,
               imageUrl:
-                "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png",
+                opponent?.image?.hires ||
+                opponent?.image?.thumbnail ||
+                opponent?.image?.sprite ||
+                "",
             }}
             champion2Data={{
-              name: "Picatchu",
-              speed: 80,
+              name:
+                typeof user?.name === "string"
+                  ? user?.name
+                  : user?.name?.english,
+              speed: user?.base?.Speed || 0,
               progress: 100,
-              maxProgress: 300,
+              maxProgress: user?.base?.HP || 0,
               imageUrl:
-                "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/025.png",
+                user?.image?.hires ||
+                user?.image?.thumbnail ||
+                user?.image?.sprite ||
+                "",
             }}
           />
         )}

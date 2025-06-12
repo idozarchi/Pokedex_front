@@ -3,13 +3,13 @@ import Champion from "../Arena/chamion";
 const PreFight = ({
   className = "",
   imageUrl,
-  champion1Url,
-  champion2Url,
+  opponentUrl,
+  userUrl,
 }: {
   className?: string;
   imageUrl: string;
-  champion1Url: string;
-  champion2Url: string;
+  opponentUrl: string;
+  userUrl: string;
 }) => {
   return (
     <div
@@ -17,10 +17,10 @@ const PreFight = ({
       style={{ backgroundImage: `url('${imageUrl}')` }}
     >
       <div className="absolute top-20 left-45">
-        <Champion size={230} imageUrl={champion1Url} />
+        <Champion size={230} imageUrl={userUrl} />
       </div>
       <div className="absolute bottom-20 right-45">
-        <Champion size={230} imageUrl={champion2Url} />
+        <Champion size={230} imageUrl={opponentUrl} />
       </div>
     </div>
   );
