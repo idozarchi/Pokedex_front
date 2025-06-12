@@ -8,11 +8,7 @@ import {
   DropdownMenuSeparator,
 } from "../Dropdown/dropdown-menu";
 import { Button } from "../Button/button";
-import {
-  ChevronDown,
-  ChevronUp,
-  Calendar as DateRangeIcon,
-} from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { ClearIcon } from "../../../assets/ClearIcon";
 
 type FilterOption = {
@@ -25,7 +21,7 @@ type FilterProps = {
   value: string | null;
   onChange: (value: string | null) => void;
   label?: string;
-  showDateRangeIcon?: boolean;
+  icon?: React.ReactNode;
 };
 
 export function Filter({
@@ -33,7 +29,7 @@ export function Filter({
   value,
   onChange,
   label = "Filter",
-  showDateRangeIcon = true,
+  icon,
 }: FilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -49,7 +45,7 @@ export function Filter({
       <DropdownMenuTrigger asChild>
         <Button className={buttonClass + " relative"}>
           <span className="flex items-center pointer-events-none">
-            {showDateRangeIcon && <DateRangeIcon size={16} className="mr-2" />}{" "}
+            {icon}
             {selected ? selected.label : label}
             {isSelected && (
               <span
