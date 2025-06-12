@@ -11,6 +11,7 @@ import {
 import { usePokemonsTable } from "../hooks/usePokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
 import { fetchMyPokemons } from "../api/fetchPokemons";
+import { CircularLoader } from "../components/ui/Loader/circular-loader";
 
 export default function MyPokemonsPage() {
   const {
@@ -59,7 +60,7 @@ export default function MyPokemonsPage() {
           {loading ? (
             <TableRow>
               <TableCell colSpan={5} className="text-center">
-                Loading...
+                <CircularLoader size={32} />
               </TableCell>
             </TableRow>
           ) : (
