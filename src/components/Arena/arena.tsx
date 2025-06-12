@@ -6,7 +6,23 @@ import { AttackButton } from "../../assets/pokador";
 import { Pokador } from "../../assets/catch-button";
 import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
 
-const Arena = ({ className = "" }: { className?: string }) => {
+export type ChampionData = {
+  name: string;
+  speed: number;
+  progress: number;
+  maxProgress: number;
+  imageUrl: string;
+};
+
+const Arena = ({
+  className = "",
+  champion1Data,
+  champion2Data,
+}: {
+  className?: string;
+  champion1Data: ChampionData;
+  champion2Data: ChampionData;
+}) => {
   return (
     <div
       className={`arena-background ${className} relative bg-cover bg-center w-full`}
@@ -17,16 +33,14 @@ const Arena = ({ className = "" }: { className?: string }) => {
       <div className="min-w-[50%] h-[50%] absolute top-0 right-0 m-4">
         <div className="absolute top-0 right-0 m-4 min-w-[50%]">
           <ChampionInfo
-            maxProgress={300}
-            progress={300}
-            pokemon={{ name: "Bulbasaur", speed: 184 }}
+            maxProgress={champion1Data.maxProgress}
+            progress={champion1Data.progress}
+            pokemon={{ name: champion1Data.name, speed: champion1Data.speed }}
             disabled={false}
           />
         </div>
         <Champion
-          imageUrl={
-            "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
-          }
+          imageUrl={champion1Data.imageUrl}
           className="absolute bottom-14 left-36"
         />
       </div>
@@ -37,16 +51,14 @@ const Arena = ({ className = "" }: { className?: string }) => {
       <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-4">
         <div className="absolute bottom-0 left-0 m-4 max-w-[400px]">
           <ChampionInfo
-            maxProgress={340}
-            progress={75}
-            pokemon={{ name: "Picachu", speed: 240 }}
+            maxProgress={champion2Data.maxProgress}
+            progress={champion2Data.progress}
+            pokemon={{ name: champion2Data.name, speed: champion2Data.speed }}
             disabled={true}
           />
         </div>
         <Champion
-          imageUrl={
-            "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/025.png"
-          }
+          imageUrl={champion2Data.imageUrl}
           className="absolute top-14 right-36 transform scale-x-[-1]"
         />
       </div>
