@@ -4,10 +4,11 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-  CardFooter,
 } from "../ui/Card/card";
 import { Separator } from "../ui/Separator/separator";
 import { ClearIcon } from "../../assets/ClearIcon";
+import { getPokemonAttributes } from "../../utils/pokemonAttributes";
+import type { PokemonAttribute } from "../../utils/pokemonAttributes";
 
 type PokemonInfoModalProps = {
   open: boolean;
@@ -36,12 +37,12 @@ export function PokemonInfoModal({
 }: PokemonInfoModalProps) {
   if (!open) return null;
 
-  const attributes = [
-    { label: "Height", value: height },
-    { label: "Weight", value: weight },
-    { label: "Category", value: category },
-    { label: "Abilities", value: abilities.join(", ") },
-  ];
+  const attributes: PokemonAttribute[] = getPokemonAttributes({
+    height,
+    weight,
+    category,
+    abilities,
+  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
