@@ -25,7 +25,7 @@ type FilterProps = {
 };
 
 export function Filter({
-  options,
+  options = [],
   value,
   onChange,
   label = "Filter",
@@ -33,7 +33,8 @@ export function Filter({
 }: FilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const selected = options.find((opt) => opt.value === value);
+  const safeOptions = Array.isArray(options) ? options : [];
+  const selected = safeOptions.find((opt) => opt.value === value);
 
   const isSelected = !!selected;
   const buttonClass = isSelected
@@ -74,7 +75,7 @@ export function Filter({
       <DropdownMenuContent>
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {options.map((opt) => (
+        {safeOptions.map((opt) => (
           <DropdownMenuItem
             key={opt.value}
             onSelect={() => onChange(opt.value)}
