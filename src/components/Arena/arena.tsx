@@ -14,15 +14,17 @@ export type ChampionData = {
   imageUrl: string;
 };
 
+export type ArenaProps = {
+  className?: string;
+  champion1Data: ChampionData;
+  champion2Data: ChampionData;
+};
+
 const Arena = ({
   className = "",
   champion1Data,
   champion2Data,
-}: {
-  className?: string;
-  champion1Data: ChampionData;
-  champion2Data: ChampionData;
-}) => {
+}: ArenaProps) => {
   return (
     <div
       className={`arena-background ${className} relative bg-cover bg-center w-full`}

@@ -1,3 +1,5 @@
+import { cn } from "../../lib/utils";
+
 type ChampionProps = {
   imageUrl: string;
   alt?: string;
@@ -16,7 +18,7 @@ const Champion = ({
   }]`;
   return (
     <div
-      className={`flex justify-center items-center ${sizeClass} ${className}`}
+      className={cn("flex justify-center items-center", sizeClass, className)}
     >
       <img
         src={imageUrl}
