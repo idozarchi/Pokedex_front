@@ -5,6 +5,7 @@ import GameButton from "./game-button";
 import { AttackButton } from "../../assets/pokador";
 import { Pokador } from "../../assets/catch-button";
 import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
+import { useState } from "react";
 
 export type ChampionData = {
   name: string;
@@ -18,11 +19,15 @@ const Arena = ({
   className = "",
   champion1Data,
   champion2Data,
+  starter,
 }: {
   className?: string;
   champion1Data: ChampionData;
   champion2Data: ChampionData;
+  starter: "user" | "opponent";
 }) => {
+  const [turn, setTurn] = useState<"user" | "opponent">(() => starter);
+
   return (
     <div
       className={`arena-background ${className} relative bg-cover bg-center w-full`}
@@ -36,7 +41,7 @@ const Arena = ({
             maxProgress={champion1Data.maxProgress}
             progress={champion1Data.progress}
             pokemon={{ name: champion1Data.name, speed: champion1Data.speed }}
-            disabled={false}
+            disabled={turn !== "opponent"}
           />
         </div>
         <Champion
@@ -54,7 +59,7 @@ const Arena = ({
             maxProgress={champion2Data.maxProgress}
             progress={champion2Data.progress}
             pokemon={{ name: champion2Data.name, speed: champion2Data.speed }}
-            disabled={true}
+            disabled={turn !== "user"}
           />
         </div>
         <Champion

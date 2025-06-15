@@ -4,19 +4,31 @@ import Arena from "../components/Arena/arena";
 import { ArenaHeader } from "../components/ArenaHeader/areana-header";
 import PreFight from "../components/PreFight/pre-fight";
 import { PREFIGHT_BACKGROUND_SRC } from "../constants/header";
-
-// All strings and constants are imported from the constants file when it will merged
+import { startFight } from "../api/startFight";
+import type { StartFightResponse } from "../api/startFight";
 
 export default function ArenaPage() {
   const location = useLocation();
-  const opponent = location.state?.opponent;
-  const user = location.state?.user;
+  const userId = location.state?.userId;
+  const [fightData, setFightData] = useState<StartFightResponse | null>(null);
   const [showPreFight, setShowPreFight] = useState(true);
+
+  useEffect(() => {
+    if (userId) {
+      startFight(userId).then(setFightData).catch(console.error);
+    }
+  }, [userId]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowPreFight(false), 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  if (!fightData) {
+    return <div className="p-10">Loading...</div>;
+  }
+
+  const { user, opponent } = fightData;
 
   return (
     <div className="p-10 min-h-screen">
@@ -74,6 +86,7 @@ export default function ArenaPage() {
                 user?.image?.sprite ||
                 "",
             }}
+            starter={fightData.starter}
           />
         )}
       </div>

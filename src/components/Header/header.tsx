@@ -5,7 +5,6 @@ import HeaderMenu from "./header-menu";
 import { Button } from "../ui/Button/button";
 import { HEADER_LOGO_SRC } from "../../constants/header";
 import ChoosePokemonModal from "../ChoosePokemonModal/choose-pokemon-modal";
-import { getRandomPokemon } from "../../api/getRandomPokemon";
 
 type HeaderMenuItem = {
   name: string;
@@ -34,8 +33,7 @@ export function Header({ items }: HeaderProps) {
           <ChoosePokemonModal
             onSelect={async (pokemon) => {
               setShowModal(false);
-              const opponent = await getRandomPokemon();
-              navigate(`/arena`, { state: { user: pokemon, opponent } });
+              navigate(`/arena`, { state: { userId: pokemon.id } });
             }}
             onClose={() => setShowModal(false)}
           />

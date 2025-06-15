@@ -79,3 +79,13 @@ export async function fetchMyPokemons(
     results: allPokemons.slice(0, amount),
   };
 }
+
+export async function fetchPokemonsByIds(ids: number[]): Promise<Pokemon[]> {
+  const res = await fetch("/pokemon.json");
+  if (!res.ok) {
+    throw new Error("Failed to fetch Pokémon");
+  }
+  const data = await res.json();
+  const allPokemons: Pokemon[] = data.results || data;
+  return allPokemons.filter((pokemon) => ids.includes(pokemon.id));
+}
