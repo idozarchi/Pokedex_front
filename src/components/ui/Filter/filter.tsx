@@ -24,18 +24,19 @@ type FilterProps = {
   options: FilterOption[];
   value: string | null;
   onChange: (value: string | null) => void;
-  label?: string; // This will be used for the dropdown label and placeholder
+  label?: string;
 };
 
 export function Filter({
-  options,
+  options = [],
   value,
   onChange,
   label = "Filter",
 }: FilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const selected = options.find((opt) => opt.value === value);
+  const safeOptions = Array.isArray(options) ? options : [];
+  const selected = safeOptions.find((opt) => opt.value === value);
 
   const isSelected = !!selected;
   const buttonClass = isSelected
@@ -76,7 +77,7 @@ export function Filter({
       <DropdownMenuContent>
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {options.map((opt) => (
+        {safeOptions.map((opt) => (
           <DropdownMenuItem
             key={opt.value}
             onSelect={() => onChange(opt.value)}

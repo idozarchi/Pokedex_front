@@ -34,7 +34,7 @@ export default function MyPokemonsPage() {
         title="My Pokémons"
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-        filterOptions={[
+        options={[
           { label: "Name", value: "name" },
           { label: "ID", value: "id" },
           { label: "Power Level", value: "power" },
