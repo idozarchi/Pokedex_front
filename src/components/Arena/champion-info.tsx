@@ -5,6 +5,12 @@ export type ChampionPokemon = {
   speed: number;
 };
 
+function getProgressBarClass(progress: number) {
+  if (progress > 80) return "bg-[var(--color-success-green)]";
+  if (progress > 30) return "bg-[var(--color-warning-yellow)]";
+  return "bg-[var(--color-error-red)]";
+}
+
 export const ChampionInfo = ({
   maxProgress,
   progress,
@@ -28,7 +34,8 @@ export const ChampionInfo = ({
       <Progress
         value={progress}
         max={maxProgress}
-        className="w-full [&>*]:bg-green-500"
+        className="w-full"
+        indicatorClassName={getProgressBarClass(progress)}
       />
       <div className="flex justify-between items-center mt-2 text-sm">
         <span className="font-light">
