@@ -36,7 +36,6 @@ export function PaginationInfo({
           aria-disabled={page === 1}
           tabIndex={page === 1 ? -1 : 0}
           className={cn(
-            // Remove hover/focus, keep only active (pressed) effect
             "bg-transparent active:bg-muted shadow-none text-inherit transition-colors",
             page === 1 && "pointer-events-none opacity-50"
           )}
