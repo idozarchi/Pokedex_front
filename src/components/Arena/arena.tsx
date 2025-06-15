@@ -5,8 +5,7 @@ import GameButton from "./game-button";
 import { AttackButton } from "../../assets/pokador";
 import { Pokador } from "../../assets/catch-button";
 import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
-import { useState, useEffect } from "react";
-import { calculateNewLifeBarApi } from "../../api/calculateNewLifeBarApi";
+import { useArenaState } from "./useArenaState";
 import EndOfFightModal from "../EndOfFightModal/end-of-fight-modal";
 import ChoosePokemonModal from "../ChoosePokemonModal/choose-pokemon-modal";
 
@@ -29,62 +28,18 @@ const Arena = ({
   champion2Data: ChampionData;
   starter: "user" | "opponent";
 }) => {
-  const [turn, setTurn] = useState<"user" | "opponent">(() => starter);
-  const [champ1Life, setChamp1Life] = useState(100);
-  const [champ2Life, setChamp2Life] = useState(100);
-  const [isAttacking, setIsAttacking] = useState(false);
-  const [dialogue, setDialogue] = useState<string>(
-    starter === "user"
-      ? `${champion2Data.name} Is starting the fight!`
-      : `${champion1Data.name} Is starting the fight!`
-  );
-  const [showEndModal, setShowEndModal] = useState(false);
-  const [winner, setWinner] = useState<string | null>(null);
-  const [showChooseModal, setShowChooseModal] = useState(false);
-
-  useEffect(() => {
-    if (champ1Life <= 0) {
-      setWinner(champion2Data.name);
-      setShowEndModal(true);
-    } else if (champ2Life <= 0) {
-      setWinner(champion1Data.name);
-      setShowEndModal(true);
-    }
-  }, [champ1Life, champ2Life, champion1Data.name, champion2Data.name]);
-
-  const handleAttack = async () => {
-    setIsAttacking(true);
-    setDialogue(
-      turn === "user"
-        ? `${champion2Data.name} Attacking!`
-        : `${champion1Data.name} Attacking!`
-    );
-    if (turn === "user") {
-      const newLife = await calculateNewLifeBarApi(
-        champion2Data.speed,
-        champ1Life,
-        champion1Data.maxProgress
-      );
-      setTimeout(() => {
-        setChamp1Life(newLife);
-        setTurn("opponent");
-        setIsAttacking(false);
-        setDialogue(`${champion1Data.name} turn`);
-      }, 700);
-    } else {
-      const newLife = await calculateNewLifeBarApi(
-        champion1Data.speed,
-        champ2Life,
-        champion2Data.maxProgress
-      );
-      setTimeout(() => {
-        setChamp2Life(newLife);
-        setTurn("user");
-        setIsAttacking(false);
-        setDialogue(`${champion2Data.name} turn`);
-      }, 600);
-    }
-  };
+  const {
+    turn,
+    champ1Life,
+    champ2Life,
+    isAttacking,
+    dialogue,
+    showEndModal,
+    winner,
+    showChooseModal,
+    handleAttack,
+    setShowChooseModal,
+  } = useArenaState({ champion1Data, champion2Data, starter });
 
   return (
     <div
@@ -106,7 +61,7 @@ const Arena = ({
           imageUrl={champion1Data.imageUrl}
           className={`absolute bottom-14 left-36${
             isAttacking && turn === "opponent" ? " animate-vibrate" : ""
-          }`}
+          }${champ1Life <= 0 ? " animate-faint-right" : ""}`}
         />
       </div>
       <DialogueBox
@@ -126,10 +81,9 @@ const Arena = ({
           imageUrl={champion2Data.imageUrl}
           className={`absolute top-14 right-36 transform scale-x-[-1]${
             isAttacking && turn === "user" ? " animate-vibrate" : ""
-          }`}
+          }${champ2Life <= 0 ? " animate-faint-right" : ""}`}
         />
       </div>
-      {/* Only show buttons if not attacking */}
       {!isAttacking && (
         <div className="absolute bottom-8 right-10 flex flex-row gap-6">
           <GameButton
