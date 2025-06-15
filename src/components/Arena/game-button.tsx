@@ -19,7 +19,7 @@ function GameButton({
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex flex-col items-center justify-center w-36 h-36 bg-neutral-100 rounded-full shadow-lg overflow-hidden focus:outline-none border-4 border-black ${className}`}
+      className={`relative flex flex-col items-center justify-center w-36 h-36 bg-neutral-100 rounded-full shadow-lg overflow-hidden focus:outline-none border-4 border-black hover:border-blue-600 transition-colors duration-200 ${className}`}
       style={
         imageUrl
           ? {

@@ -33,7 +33,7 @@ export function Header({ items }: HeaderProps) {
           <ChoosePokemonModal
             onSelect={async (pokemon) => {
               setShowModal(false);
-              navigate(`/arena`, { state: { userId: pokemon.id } });
+              navigate(`/arena?userId=${pokemon.id}`);
             }}
             onClose={() => setShowModal(false)}
           />

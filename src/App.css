@@ -230,3 +230,42 @@ input:focus::placeholder {
 .bg-extended-gradient-disabled {
   background: var(--color-extended-gradient-disabled);
 }
+
+@keyframes vibrate {
+  0% {
+    transform: translate(0);
+  }
+  10% {
+    transform: translate(-6px, 6px);
+  }
+  20% {
+    transform: translate(-6px, -6px);
+  }
+  30% {
+    transform: translate(6px, 6px);
+  }
+  40% {
+    transform: translate(6px, -6px);
+  }
+  50% {
+    transform: translate(-6px, 6px);
+  }
+  60% {
+    transform: translate(-6px, -6px);
+  }
+  70% {
+    transform: translate(6px, 6px);
+  }
+  80% {
+    transform: translate(6px, -6px);
+  }
+  90% {
+    transform: translate(-6px, 6px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+.animate-vibrate {
+  animation: vibrate 0.69s linear;
+}
