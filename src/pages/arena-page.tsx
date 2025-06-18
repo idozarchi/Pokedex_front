@@ -86,34 +86,8 @@ export default function ArenaPage() {
         ) : (
           <Arena
             className="w-full h-[90%]"
-            champion1Data={{
-              name:
-                typeof opponent?.name === "string"
-                  ? opponent?.name
-                  : opponent?.name?.english,
-              speed: opponent?.base?.Speed || 0,
-              progress: 100,
-              maxProgress: opponent?.base?.HP || 0,
-              imageUrl:
-                opponent?.image?.hires ||
-                opponent?.image?.thumbnail ||
-                opponent?.image?.sprite ||
-                "",
-            }}
-            champion2Data={{
-              name:
-                typeof currentUser?.name === "string"
-                  ? currentUser?.name
-                  : currentUser?.name?.english,
-              speed: currentUser?.base?.Speed || 0,
-              progress: 100,
-              maxProgress: currentUser?.base?.HP || 0,
-              imageUrl:
-                currentUser?.image?.hires ||
-                currentUser?.image?.thumbnail ||
-                currentUser?.image?.sprite ||
-                "",
-            }}
+            champion1Data={opponent}
+            champion2Data={currentUser}
             starter={fightData.starter}
           />
         )}

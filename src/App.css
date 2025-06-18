@@ -287,3 +287,16 @@ input:focus::placeholder {
 .animate-faint-right {
   animation: faint-right 0.7s forwards;
 }
+
+@keyframes pokador-catch-move {
+  0% {
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    left: calc(96vw - 600px);
+    top: 160px;
+    transform: translate(0, 0) scale(0.7);
+  }
+}

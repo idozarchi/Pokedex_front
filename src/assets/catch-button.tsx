@@ -1,7 +1,11 @@
-export const Pokador = () => (
+export const Pokador = ({
+  size = 80,
+  ...props
+}: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
-    width="56"
-    height="56"
+    width={size}
+    height={size}
+    {...props}
     viewBox="0 0 56 56"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

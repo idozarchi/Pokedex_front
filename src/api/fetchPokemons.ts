@@ -67,16 +67,37 @@ export async function fetchPokemons(
 export async function fetchMyPokemons(
   amount: number
 ): Promise<FetchPokemonsResponse> {
-  const res = await fetch("/my-pokemons.json");
-  if (!res.ok) {
-    throw new Error("Failed to fetch Pokémon");
+  // Try to get from localStorage first
+  let mergedPokemons: Pokemon[] = [];
+  try {
+    const stored = localStorage.getItem("catchedPokemons");
+    if (stored) {
+      mergedPokemons = JSON.parse(stored);
+    }
+  } catch {
+    mergedPokemons = [];
   }
-  const data = await res.json();
-  const allPokemons: Pokemon[] = data.results || data;
+
+  // Also fetch from /my-pokemons.json and merge (preventing duplicates)
+  try {
+    const res = await fetch("/my-pokemons.json");
+    if (res.ok) {
+      const data = await res.json();
+      const allPokemons: Pokemon[] = data.results || data;
+      const existingIds = new Set(mergedPokemons.map((p) => p.id));
+      for (const p of allPokemons) {
+        if (!existingIds.has(p.id)) {
+          mergedPokemons.push(p);
+        }
+      }
+    }
+  } catch {
+    // Ignore fetch errors
+  }
 
   return {
-    count: allPokemons.length,
-    results: allPokemons.slice(0, amount),
+    count: mergedPokemons.length,
+    results: mergedPokemons.slice(0, amount),
   };
 }
 
