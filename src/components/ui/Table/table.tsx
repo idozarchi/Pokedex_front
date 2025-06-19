@@ -10,7 +10,7 @@ function TableFooter({
   total = 0,
   onPageChange,
   onPageSizeChange,
-  rowsPerPageOptions = [10, 20, 50, 100], // <-- Add default prop
+  rowsPerPageOptions = [10, 20, 50, 100],
   ...props
 }: React.ComponentProps<"tfoot"> & {
   page?: number;
@@ -18,7 +18,7 @@ function TableFooter({
   total?: number;
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
-  rowsPerPageOptions?: number[]; // <-- Add prop type
+  rowsPerPageOptions?: number[];
 }) {
   return (
     <tfoot

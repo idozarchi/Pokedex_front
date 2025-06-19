@@ -28,6 +28,7 @@ export function useArenaState({
   const [canCatchPokemon, setCanCatchPokemon] = useState(0);
   const [isCatching, setIsCatching] = useState(false);
   const [catchAnimationKey, setCatchAnimationKey] = useState(0);
+  const [catchAttempts, setCatchAttempts] = useState(0);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -101,11 +102,26 @@ export function useArenaState({
   };
 
   const handleCatch = () => {
+    if (catchAttempts >= 2) {
+      setIsCatching(true);
+      setCatchAnimationKey((k) => k + 1);
+      setTimeout(() => {
+        setIsCatching(false);
+        setWinner(champion1Data.name.english); // Opponent wins
+        setShowEndModal(true);
+        setDialogue("The Pokémon fled!");
+      }, 1200);
+      setCatchAttempts((a) => a + 1);
+      return;
+    }
     setIsCatching(true);
     setCatchAnimationKey((k) => k + 1);
     if (!canCatchPokemon) {
       setDialogue("He got away!");
-      setTimeout(() => setIsCatching(false), 1200);
+      setTimeout(() => {
+        setIsCatching(false);
+        setCatchAttempts((a) => a + 1);
+      }, 1200);
       return;
     }
     setTimeout(() => {
@@ -114,6 +130,7 @@ export function useArenaState({
       setShowEndModal(true);
       putPokemon(champion1Data.id);
     }, 1200);
+    setCatchAttempts((a) => a + 1);
   };
 
   return {
@@ -138,5 +155,6 @@ export function useArenaState({
     canCatchPokemon,
     isCatching,
     catchAnimationKey,
+    catchAttempts,
   };
 }

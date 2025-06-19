@@ -64,7 +64,7 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                         key={pokemon.id}
                         onClick={() => setSelected(pokemon)}
                         type="button"
-                        className={`flex flex-row items-center justify-center p-4 hover:bg-yellow-100 rounded transition-transform border-2 ${translateY} ${
+                        className={`flex flex-row items-center justify-center p-4 hover:bg-blue-100 rounded transition-transform border-2 ${translateY} ${
                           isSelected
                             ? "border-yellow-500 bg-yellow-50"
                             : "border-transparent"

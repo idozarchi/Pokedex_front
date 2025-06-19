@@ -19,7 +19,7 @@ export const Pokador = ({
       rx="26.7129"
       fill="url(#pattern0_6337_3674)"
       stroke="black"
-      stroke-width="1.65235"
+      strokeWidth="1.65235"
     />
     <defs>
       <pattern

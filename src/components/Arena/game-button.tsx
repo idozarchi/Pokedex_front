@@ -6,6 +6,7 @@ type GameButtonProps = {
   imageUrl?: string;
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 function GameButton({
@@ -14,12 +15,16 @@ function GameButton({
   imageUrl,
   className = "",
   onClick,
+  disabled = false,
 }: GameButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex flex-col items-center justify-center w-36 h-36 bg-neutral-100 rounded-full shadow-lg overflow-hidden focus:outline-none border-4 border-black hover:border-blue-600 transition-colors duration-200 ${className}`}
+      disabled={disabled}
+      className={`relative flex flex-col items-center justify-center w-36 h-36 bg-neutral-100 rounded-full shadow-lg overflow-hidden focus:outline-none border-4 border-black hover:border-blue-600 transition-colors duration-200 ${className} ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
       style={
         imageUrl
           ? {

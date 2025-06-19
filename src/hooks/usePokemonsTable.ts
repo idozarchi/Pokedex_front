@@ -14,7 +14,7 @@ export function usePokemonsTable(
 
   useEffect(() => {
     setLoading(true);
-    fetchFn(100).then((data) => {
+    fetchFn(900).then((data) => {
       setPokemons(data.results);
       setLoading(false);
     });

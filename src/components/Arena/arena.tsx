@@ -2,7 +2,7 @@ import Champion from "./chamion";
 import ChampionInfo from "./champion-info";
 import DialogueBox from "./dialogue-box";
 import GameButton from "./game-button";
-import { AttackButton } from "../../assets/pokador";
+import { AttackButton } from "../../assets/attack-button";
 import { Pokador } from "../../assets/catch-button";
 import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
 import { useArenaState } from "./useArenaState";
@@ -114,6 +114,7 @@ const Arena = ({
             }
             key={canCatchPokemon}
             onClick={handleCatch}
+            disabled={turn === "opponent"}
           />
         </div>
       )}

@@ -37,6 +37,7 @@ export type Pokemon = {
     hires: string;
     [key: string]: string;
   };
+  catched: boolean;
 };
 
 export type FetchPokemonsResponse = {
@@ -56,7 +57,22 @@ export async function fetchPokemons(
     throw new Error("Failed to fetch Pokémon");
   }
   const data = await res.json();
-  const allPokemons: Pokemon[] = data.results || data;
+  let allPokemons: Pokemon[] = data.results || data;
+
+  // Get the user's caught Pokémon IDs using fetchMyPokemons
+  let caughtIds = new Set<number>();
+  try {
+    const myPokemons = await fetchMyPokemons(10000); // large number to get all
+    caughtIds = new Set(myPokemons.results.map((p) => p.id));
+  } catch {
+    // Ignore errors, treat as none caught
+  }
+
+  // Mark catched property
+  allPokemons = allPokemons.map((p) => ({
+    ...p,
+    catched: caughtIds.has(p.id),
+  }));
 
   return {
     count: allPokemons.length,

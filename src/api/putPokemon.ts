@@ -12,7 +12,9 @@ export async function putPokemon(id: number): Promise<Pokemon | null> {
   // Get the Pokémon by ID
   const pokemons = await fetchPokemonsByIds([id]);
   const pokemon = pokemons[0];
+
   if (!pokemon) return null;
+  pokemon.catched = true;
 
   // Get current caught pokemons from localStorage
   let myPokemons: Pokemon[] = [];
