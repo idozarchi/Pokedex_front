@@ -43,6 +43,11 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+body,
+:root {
+  font-family: "Mulish", sans-serif;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

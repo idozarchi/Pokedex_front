@@ -11,7 +11,6 @@ import type { Pokemon } from "../api/fetchPokemons";
 
 export default function ArenaPage() {
   const location = useLocation();
-  // Extract userId from query string
   const params = new URLSearchParams(location.search);
   const userId = params.get("userId")
     ? Number(params.get("userId"))
@@ -56,7 +55,7 @@ export default function ArenaPage() {
   const { opponent } = fightData;
 
   return (
-    <div className="p-10 min-h-screen">
+    <div className="bg-neutral-100 p-10 min-h-screen">
       <ArenaHeader
         headline="Fighting Arena"
         description="Start fighting against your opponent to win the battle"

@@ -49,7 +49,7 @@ const Arena = ({
 
   return (
     <div
-      className={`arena-background ${className} relative bg-cover bg-center w-full`}
+      className={`arena-background ${className} relative bg-cover bg-center w-full h-full`}
       style={{
         backgroundImage: "url('/arena-background.png')",
       }}
@@ -74,7 +74,7 @@ const Arena = ({
         />
       </div>
       <DialogueBox
-        className="w-[30%] h-[13%] relative top-20 justify-center"
+        className="w-[45%] h-[18%] relative top-20 justify-center"
         text={dialogue}
       ></DialogueBox>
       <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-4">

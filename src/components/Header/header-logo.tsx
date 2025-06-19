@@ -7,7 +7,7 @@ type HeaderLogoProps = {
 export const HeaderLogo = ({
   src,
   alt,
-  className = "h-40 w-40 object-contain",
+  className = "h-14 w-37 object-contain",
 }: HeaderLogoProps) => (
   <div className="flex items-center">
     <img src={src} alt={alt} className={className} />

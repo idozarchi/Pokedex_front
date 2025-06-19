@@ -24,18 +24,18 @@ function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
+        "border-t font-medium [&>tr]:last:border-b-0 bg-component-background",
         className
       )}
       {...props}
     >
       <tr>
         <td colSpan={100}>
-          <div className="flex items-center w-full px-2 py-2">
+          <div className="flex items-center w-full px-2 py-1">
             <RowsPerPageDropdown
               value={pageSize}
               onChange={onPageSizeChange || (() => {})}
-              options={rowsPerPageOptions} // <-- Use prop here
+              options={rowsPerPageOptions}
             />
             <div className="ml-auto">
               <PaginationInfo

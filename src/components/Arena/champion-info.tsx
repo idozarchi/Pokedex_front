@@ -28,7 +28,7 @@ export const ChampionInfo = ({
         disabled
           ? "bg-extended-gradient-disabled opacity-80"
           : "bg-extended-gradient-default"
-      } min-w-[300px] max-h-[150px] m-4 p-2 text-white`}
+      } min-w-[286px] max-h-[108px] m-4 p-2 text-white`}
     >
       <h2 className="text-2xl font-semibold mb-4">{pokemon.name}</h2>
       <Progress

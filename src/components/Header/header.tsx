@@ -26,7 +26,9 @@ export function Header({ items }: HeaderProps) {
           <HeaderLogo src={HEADER_LOGO_SRC} alt="Pokédex Logo" />
           <HeaderMenu items={items} />
         </div>
-        <Button onClick={() => setShowModal(true)}>Start a Fight</Button>
+        <Button size={"lg"} onClick={() => setShowModal(true)}>
+          Start a Fight
+        </Button>
       </header>
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">

@@ -42,7 +42,7 @@ export function Filter({
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger className="h-9" asChild>
         <Button className={buttonClass + " relative"}>
           <span className="flex items-center pointer-events-none">
             {icon}

@@ -17,10 +17,10 @@ type HeaderMenuProps = {
 };
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({ items }) => (
-  <NavigationMenu>
+  <NavigationMenu className="w-75 p-0.5">
     <NavigationMenuList>
       {items.map((item) => (
-        <NavigationMenuItem key={item.href}>
+        <NavigationMenuItem className="h-8" key={item.href}>
           <NavigationMenuLink
             href={item.href}
             className={`text-[var(--color-primary-300)]${

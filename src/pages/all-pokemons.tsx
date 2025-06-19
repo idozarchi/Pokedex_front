@@ -27,7 +27,7 @@ export default function AllPokemonsPage() {
   } = usePokemonsTable();
 
   return (
-    <div className="p-14 bg-neutral-100 min-h-screen">
+    <div className="p-6 bg-neutral-100 min-h-screen">
       <PageToolbar
         title="All Pokémons"
         searchValue={searchValue}

@@ -39,7 +39,7 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
           Power level {pokemon.base?.Attack ?? ""}
         </TableCell>
         <TableCell className="px-4 text-center">
-          {pokemon.base?.HP ?? ""}
+          {pokemon.base?.HP ?? ""} HP
         </TableCell>
       </TableRow>
       <PokemonInfoModal
