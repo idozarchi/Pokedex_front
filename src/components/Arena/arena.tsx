@@ -49,7 +49,7 @@ const Arena = ({
 
   return (
     <div
-      className={`arena-background ${className} relative bg-cover bg-center w-full h-full`}
+      className={`arena-background ${className} pb-0 mb-0 relative bg-cover bg-center w-full h-max-[570px]`}
       style={{
         backgroundImage: "url('/arena-background.png')",
       }}

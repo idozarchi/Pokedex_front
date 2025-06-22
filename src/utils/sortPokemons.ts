@@ -5,19 +5,29 @@ export function sortPokemons(
   filterValue: string | null
 ): Pokemon[] {
   switch (filterValue) {
-    case "name":
+    case "name-asc":
       return [...pokemons].sort((a, b) =>
         a.name.english.localeCompare(b.name.english)
       );
-    case "id":
-      return [...pokemons].sort((a, b) => a.id - b.id);
-    case "power":
+    case "name-desc":
+      return [...pokemons].sort((a, b) =>
+        b.name.english.localeCompare(a.name.english)
+      );
+    case "power-desc":
       return [...pokemons].sort(
         (a, b) => (b.base?.Attack ?? 0) - (a.base?.Attack ?? 0)
       );
-    case "hp":
+    case "power-asc":
+      return [...pokemons].sort(
+        (a, b) => (a.base?.Attack ?? 0) - (b.base?.Attack ?? 0)
+      );
+    case "hp-desc":
       return [...pokemons].sort(
         (a, b) => (b.base?.HP ?? 0) - (a.base?.HP ?? 0)
+      );
+    case "hp-asc":
+      return [...pokemons].sort(
+        (a, b) => (a.base?.HP ?? 0) - (b.base?.HP ?? 0)
       );
     default:
       return pokemons;

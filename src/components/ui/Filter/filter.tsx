@@ -12,7 +12,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { ClearIcon } from "../../../assets/ClearIcon";
 
 type FilterOption = {
-  label: string;
+  label: React.ReactNode;
   value: string;
 };
 

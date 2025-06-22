@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Headline } from "../Headline/headline";
 import { Filter } from "../ui/Filter/filter";
 import type { Pokemon } from "../../api/fetchPokemons";
+import { PokemonLogo } from "../PokemonLogo/PokemonLogo";
 
 // All strings and constants are imported from the constants file when it will merged
 
@@ -37,13 +38,31 @@ export const ArenaHeader = ({
   };
 
   const filterOptionsFormatted = filterOptions.map((pokemon) => ({
-    label:
-      typeof pokemon.name === "string" ? pokemon.name : pokemon.name.english,
+    label: (
+      <div className="flex items-center justify-between w-full min-w-[256px]">
+        <div className="flex items-center gap-3">
+          <PokemonLogo size={36} imgSrc={pokemon.image?.thumbnail} />
+          <div className="flex flex-col">
+            <span className="font-medium text-base leading-tight">
+              {typeof pokemon.name === "string"
+                ? pokemon.name
+                : pokemon.name.english}
+            </span>
+            <span className="text-xs text-blue-700">
+              Speed: {pokemon.base?.Speed ?? 0}
+            </span>
+          </div>
+        </div>
+        <span className="font-semibold text-base">
+          Pwr. {pokemon.base?.Attack ?? 0}
+        </span>
+      </div>
+    ),
     value: pokemon.id.toString(),
   }));
 
   return (
-    <div className={`arena-header ${className}`}>
+    <div className={`arena-header mt-8 ${className}`}>
       <Headline className="text-5xl font-bold mb-4">{headline}</Headline>
       <p className="text-xl text-gray-600">{description}</p>
 

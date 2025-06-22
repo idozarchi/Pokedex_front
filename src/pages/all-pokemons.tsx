@@ -10,6 +10,7 @@ import {
 } from "../components/ui/Table/table";
 import { usePokemonsTable } from "../hooks/usePokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
+import EmptySearch from "../components/EmptySearch/empty-search";
 
 export default function AllPokemonsPage() {
   const {
@@ -33,10 +34,12 @@ export default function AllPokemonsPage() {
         searchValue={searchValue}
         onSearchChange={setSearchValue}
         filterOptions={[
-          { label: "Name", value: "name" },
-          { label: "ID", value: "id" },
-          { label: "Power Level", value: "power" },
-          { label: "HP Level", value: "hp" },
+          { label: "Name (A-Z)", value: "name-asc" },
+          { label: "Name (Z-A)", value: "name-desc" },
+          { label: "Power (High-Low)", value: "power-desc" },
+          { label: "Power (Low-High)", value: "power-asc" },
+          { label: "HP (High-Low)", value: "hp-desc" },
+          { label: "HP (Low-High)", value: "hp-asc" },
         ]}
         filterValue={filterValue}
         filterLabel="Sort By"
@@ -59,6 +62,12 @@ export default function AllPokemonsPage() {
             <TableRow>
               <TableCell colSpan={5} className="text-center">
                 Loading...
+              </TableCell>
+            </TableRow>
+          ) : pagePokemons.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} className="p-0 border-0">
+                <EmptySearch text="No Pokémons were found" />
               </TableCell>
             </TableRow>
           ) : (

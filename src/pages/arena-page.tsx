@@ -55,7 +55,7 @@ export default function ArenaPage() {
   const { opponent } = fightData;
 
   return (
-    <div className="bg-neutral-100 p-10 min-h-screen">
+    <div className="bg-neutral-100 p-6 pb-0 mb-0 min-h-screen">
       <ArenaHeader
         headline="Fighting Arena"
         description="Start fighting against your opponent to win the battle"

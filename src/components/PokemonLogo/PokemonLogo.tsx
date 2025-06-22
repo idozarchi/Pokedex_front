@@ -10,17 +10,23 @@ export const PokemonLogo = ({
   size = 48,
   imgSrc,
   ...props
-}: PokemonLogoProps) =>
-  imgSrc ? (
-    <img
-      src={imgSrc}
-      width={size}
-      height={size}
-      alt="Pokémon Logo"
-      {...props}
-    />
-  ) : (
-    <PokemonLogoSVG width={size} height={size} {...props} />
-  );
+}: PokemonLogoProps) => (
+  <div
+    className="flex items-center justify-center rounded-full bg-primary-50"
+    style={{ width: size, height: size }}
+  >
+    {imgSrc ? (
+      <img
+        src={imgSrc}
+        width={size}
+        height={size}
+        alt="Pokémon Logo"
+        className="object-contain"
+      />
+    ) : (
+      <PokemonLogoSVG width={size * 0.75} height={size * 0.75} {...props} />
+    )}
+  </div>
+);
 
 export default PokemonLogo;
