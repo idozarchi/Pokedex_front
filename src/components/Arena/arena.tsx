@@ -54,8 +54,8 @@ const Arena = ({
         backgroundImage: "url('/arena-background.png')",
       }}
     >
-      <div className="min-w-[50%] h-[50%] absolute top-0 right-0 m-4">
-        <div className="absolute top-0 right-0 m-4 min-w-[50%]">
+      <div className="min-w-[50%] h-[50%] absolute top-0 right-0 m-2">
+        <div className="absolute top-0 right-0 m-3 w-[40%]">
           <ChampionInfo
             maxProgress={champion1Data.base.HP}
             progress={champ1Life}
@@ -74,11 +74,11 @@ const Arena = ({
         />
       </div>
       <DialogueBox
-        className="w-[45%] h-[18%] relative top-20 justify-center"
+        className="w-[40%] h-[17%] relative top-30 justify-center"
         text={dialogue}
       ></DialogueBox>
-      <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-4">
-        <div className="absolute bottom-0 left-0 m-4 max-w-[400px]">
+      <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-2">
+        <div className="absolute bottom-0 left-0 m-3 w-[40%]">
           <ChampionInfo
             maxProgress={champion2Data.base.HP}
             progress={champ2Life}
@@ -97,7 +97,7 @@ const Arena = ({
         />
       </div>
       {!isAttacking && (
-        <div className="absolute bottom-8 right-10 flex flex-row gap-6">
+        <div className="absolute bottom-5 right-6 flex flex-row gap-6">
           <GameButton
             title="ATTACK"
             svg={<AttackButton />}
@@ -114,7 +114,7 @@ const Arena = ({
             }
             key={canCatchPokemon}
             onClick={handleCatch}
-            disabled={turn === "opponent"}
+            disabled={turn === "opponent" || !canCatchPokemon}
           />
         </div>
       )}

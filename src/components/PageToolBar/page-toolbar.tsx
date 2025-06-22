@@ -21,14 +21,14 @@ export const PageToolbar = ({
   filterOptions,
   filterValue,
   onFilterChange,
-  filterLabel = "Filter", // <-- Default value
+  filterLabel = "Filter",
   className = "",
 }: PageToolbarProps) => (
-  <div className={`w-full mb-8 ${className}`}>
+  <div className={`w-full mb-4 ${className}`}>
     <Headline className="text-2xl mb-4">{title}</Headline>
     <div className="flex items-center justify-between bg-transparent rounded-md">
       <Searchbar
-        placeholder="Search..."
+        placeholder="Search Pokemon"
         value={searchValue}
         onChange={onSearchChange}
         size="md"

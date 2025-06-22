@@ -24,12 +24,15 @@ export const ChampionInfo = ({
 }) => {
   return (
     <div
-      className={`${
+      className={`relative ${
         disabled
           ? "bg-extended-gradient-disabled opacity-80"
           : "bg-extended-gradient-default"
-      } min-w-[286px] max-h-[108px] m-4 p-2 text-white`}
+      } min-w-[286px] max-h-[108px] m-0 p-2 text-white rounded-sm`}
     >
+      {disabled && (
+        <div className="absolute inset-0 bg-gray-200 opacity-18 rounded-sm pointer-events-none z-10" />
+      )}
       <h2 className="text-2xl font-semibold mb-4">{pokemon.name}</h2>
       <Progress
         value={progress}

@@ -19,7 +19,7 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
         key={pokemon.id}
         onClick={() => setOpen(true)}
       >
-        <TableCell className="px-4 text-center flex items-center justify-begin gap-2">
+        <TableCell className="px-4 text-left text-lg flex items-center justify-begin gap-4">
           <PokemonLogo imgSrc={pokemon.image?.hires || ""} />
           {pokemon.name.english}
           {pokemon.catched && (
@@ -28,17 +28,17 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
             </span>
           )}
         </TableCell>
-        <TableCell className="px-4 text-center">{pokemon.id}</TableCell>
+        <TableCell className="px-4 text-left">{pokemon.id}</TableCell>
         <TableCell
-          className="px-4 max-w-[544px] truncate whitespace-nowrap overflow-hidden text-center"
+          className="px-4 max-w-[544px] truncate whitespace-nowrap overflow-hidden text-left"
           title={pokemon.description}
         >
           {pokemon.description}
         </TableCell>
-        <TableCell className="px-4 text-center">
+        <TableCell className="px-4 text-left">
           Power level {pokemon.base?.Attack ?? ""}
         </TableCell>
-        <TableCell className="px-4 text-center">
+        <TableCell className="px-4 text-left">
           {pokemon.base?.HP ?? ""} HP
         </TableCell>
       </TableRow>

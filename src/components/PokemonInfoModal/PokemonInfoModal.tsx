@@ -44,7 +44,7 @@ export function PokemonInfoModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <Card className="max-w-[502px] w-full">
+      <Card className="max-w-[502px] w-full rounded-md">
         <CardHeader className="flex flex-col items-start w-full">
           <div className="flex flex-row items-center w-full">
             <span className="text-xs text-gray-500">#{id}</span>
@@ -53,7 +53,7 @@ export function PokemonInfoModal({
               <ClearIcon className="cursor-pointer" />
             </button>
           </div>
-          <CardTitle className="text-lg mb-2">{name}</CardTitle>
+          <CardTitle className="text-2xl font-normal mb-2">{name}</CardTitle>
         </CardHeader>
         <img
           src={img}

@@ -7,7 +7,7 @@ import { HEADER_LOGO_SRC } from "../../constants/header";
 import ChoosePokemonModal from "../ChoosePokemonModal/choose-pokemon-modal";
 
 type HeaderMenuItem = {
-  name: string;
+  name: string | React.ReactNode;
   href: string;
   isActive?: boolean;
 };
@@ -21,7 +21,7 @@ export function Header({ items }: HeaderProps) {
   const navigate = useNavigate();
   return (
     <>
-      <header className="w-full flex items-center justify-between px-6 bg-white border-b h-22">
+      <header className="w-full flex items-center justify-between px-6 bg-white border-b h-20">
         <div className="flex items-center gap-6 flex-shrink-0">
           <HeaderLogo src={HEADER_LOGO_SRC} alt="Pokédex Logo" />
           <HeaderMenu items={items} />

@@ -45,22 +45,22 @@ export default function AllPokemonsPage() {
         filterLabel="Sort By"
         onFilterChange={setFilterValue}
       />
-      <Table>
+      <Table className="rounded-md overflow-hidden border border-gray-200">
         <TableHeader>
           <TableRow>
-            <TableHead className="px-4 text-center">Pokemon Name</TableHead>
-            <TableHead className="px-4 text-center">ID</TableHead>
-            <TableHead className="px-4 max-w-[544px] text-center">
+            <TableHead className="px-4 text-left">Pokemon Name</TableHead>
+            <TableHead className="px-4 text-left">ID</TableHead>
+            <TableHead className="px-4 max-w-[544px] text-left">
               Description
             </TableHead>
-            <TableHead className="px-4 text-center">Power Level</TableHead>
-            <TableHead className="px-4 text-center">HP Level</TableHead>
+            <TableHead className="px-4 text-left">Power Level</TableHead>
+            <TableHead className="px-4 text-left">HP Level</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-center">
+              <TableCell colSpan={5} className="text-left">
                 Loading...
               </TableCell>
             </TableRow>

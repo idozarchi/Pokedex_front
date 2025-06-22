@@ -41,12 +41,12 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
         <CardTitle>Choose Your Pokémon</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-15 items-center">
           {Array.from({ length: Math.ceil(pokemons.length / 3) }).map(
             (_, rowIdx) => (
               <div
                 key={rowIdx}
-                className="flex flex-row gap-4 w-full justify-center"
+                className="flex flex-row gap-12 w-full justify-center"
               >
                 {pokemons
                   .slice(rowIdx * 3, rowIdx * 3 + 3)
@@ -55,8 +55,8 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                     const isEvenRow = rowIdx % 2 === 0;
                     const translateY = isMiddle
                       ? isEvenRow
-                        ? "translate-y-4"
-                        : "-translate-y-4"
+                        ? "translate-y-1"
+                        : "-translate-y-1"
                       : "";
                     const isSelected = selected?.id === pokemon.id;
                     return (
@@ -64,11 +64,10 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                         key={pokemon.id}
                         onClick={() => setSelected(pokemon)}
                         type="button"
-                        className={`flex flex-row items-center justify-center p-4 hover:bg-blue-100 rounded transition-transform border-2 ${translateY} ${
-                          isSelected
-                            ? "border-yellow-500 bg-yellow-50"
-                            : "border-transparent"
+                        className={`flex flex-row items-center rounded-full justify-center hover:border-blue-600 transition-transform border-2 ${translateY} ${
+                          isSelected ? "border-blue-600" : "border-transparent"
                         }`}
+                        style={{ padding: 0 }}
                       >
                         <PokemonLogo
                           name={
@@ -97,7 +96,7 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
       <Separator />
       <CardFooter className="flex justify-center">
         <Button
-          className="w-30 h-12"
+          className="w-26 h-10"
           onClick={() => {
             if (selected) {
               onSelect(selected);

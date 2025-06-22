@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card/card";
 import { Separator } from "../ui/Separator/separator";
 import { Button } from "../ui/Button/button";
 import Champion from "../Arena/chamion";
+import { Pokador } from "../../assets/catch-button";
+import { ClearIcon } from "../../assets/ClearIcon";
 
 type EndOfFightModalProps = {
   winner: string;
@@ -24,21 +26,26 @@ export const EndOfFightModal = ({
 }: EndOfFightModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <Card className="w-96 p-6">
+      <Card className="w-[502px] h-wrap p-6 relative">
+        <button
+          onClick={onReturnToMenu}
+          className="absolute top-4 right-4 ml-auto"
+        >
+          <ClearIcon className="cursor-pointer" />
+        </button>
         <CardHeader>
-          <CardTitle className="text-xl mb-4">
-            {title || "Fight Over!"}
+          <CardTitle className="text-xl mb-4 gap-2 items-center flex flex-row">
+            {title || "Fight Over!"} <Pokador size={23} />
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center">
           <div className="mb-6">
             <Champion
               imageUrl={winnerImageUrl}
-              size={200}
+              size={180}
               className="mx-auto"
             />
           </div>
-          {/* Render description attributes if present */}
           {description && description.attributes.length > 0 && (
             <div className="flex flex-col space-x-5 mb-4 w-full bg-system-background p-4">
               <CardTitle className="text-lg mb-4">
@@ -56,10 +63,12 @@ export const EndOfFightModal = ({
               </div>
             </div>
           )}
-          <Separator className="my-4 w-full" />
-          <div className="flex gap-4 mt-6">
+          <Separator className="mt-2 w-full" />
+          <div className="flex gap-4 mt-5">
             <Button onClick={onPlayAgain} className="px-6 py-2">
-              Switch Pokemon
+              {description && title?.toLowerCase().includes("caught")
+                ? "Continue Fighting"
+                : "Switch Pokemon"}
             </Button>
             <Button
               variant="secondary"
