@@ -1,3 +1,5 @@
+import { cn } from "../../lib/utils";
+
 type ChampionProps = {
   imageUrl: string;
   alt?: string;
@@ -10,18 +12,22 @@ const Champion = ({
   alt = "Champion Pokémon",
   size = 200,
   className = "",
-}: ChampionProps) => (
-  <div
-    className={`flex justify-center items-center ${className}`}
-    style={{ width: size, height: size }}
-  >
-    <img
-      src={imageUrl}
-      alt={alt}
-      style={{ width: "100%", height: "100%", objectFit: "contain" }}
-      draggable={false}
-    />
-  </div>
-);
+}: ChampionProps) => {
+  const sizeClass = `w-[${typeof size === "number" ? size + "px" : size}] h-[${
+    typeof size === "number" ? size + "px" : size
+  }]`;
+  return (
+    <div
+      className={cn("flex justify-center items-center", sizeClass, className)}
+    >
+      <img
+        src={imageUrl}
+        alt={alt}
+        className="w-full h-full object-contain"
+        draggable={false}
+      />
+    </div>
+  );
+};
 
 export default Champion;
