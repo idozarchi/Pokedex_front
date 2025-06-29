@@ -1,4 +1,12 @@
 import Champion from "../Arena/chamion";
+import { cn } from "../../lib/utils";
+
+export type PreFightProps = {
+  className?: string;
+  imageUrl: string;
+  champion1Url: string;
+  champion2Url: string;
+};
 
 const PreFight = ({
   className = "",
@@ -13,7 +21,7 @@ const PreFight = ({
 }) => {
   return (
     <div
-      className={`w-full bg-cover bg-center relative ${className}`}
+      className={cn("w-full bg-cover bg-center relative", className)}
       style={{ backgroundImage: `url('${imageUrl}')` }}
     >
       <div className="absolute top-20 left-45">

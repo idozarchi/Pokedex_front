@@ -7,7 +7,7 @@ type PageToolbarProps = {
   title: React.ReactNode;
   searchValue: string;
   onSearchChange: (value: string) => void;
-  filterOptions: Array<{ label: string; value: string }>;
+  options: Array<{ label: string; value: string }>;
   filterValue: string | null;
   onFilterChange: (value: string | null) => void;
   filterLabel?: string;
@@ -18,7 +18,7 @@ export const PageToolbar = ({
   title,
   searchValue,
   onSearchChange,
-  filterOptions,
+  options,
   filterValue,
   onFilterChange,
   filterLabel = "Filter", // <-- Default value
@@ -34,7 +34,7 @@ export const PageToolbar = ({
         size="md"
       />
       <Filter
-        options={filterOptions}
+        options={options}
         value={filterValue}
         onChange={onFilterChange}
         label={filterLabel}
