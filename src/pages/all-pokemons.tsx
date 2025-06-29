@@ -10,6 +10,7 @@ import {
 } from "../components/ui/Table/table";
 import { usePokemonsTable } from "../hooks/usePokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
+import { CircularLoader } from "../components/ui/Loader/circular-loader";
 import EmptySearch from "../components/EmptySearch/empty-search";
 
 export default function AllPokemonsPage() {
@@ -60,8 +61,8 @@ export default function AllPokemonsPage() {
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-left">
-                Loading...
+              <TableCell colSpan={5} className="text-center">
+                <CircularLoader size={32} />
               </TableCell>
             </TableRow>
           ) : pagePokemons.length === 0 ? (
