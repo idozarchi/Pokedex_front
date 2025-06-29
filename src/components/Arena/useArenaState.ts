@@ -34,7 +34,7 @@ export function useArenaState({
     let interval: NodeJS.Timeout | null = null;
     if (
       champ1Life > 0 &&
-      champ1Life < champion1Data.base.HP * 0.3 &&
+      champ1Life < champion1Data.base.HP * 0.5 &&
       !isAttacking
     ) {
       interval = setInterval(() => {
@@ -107,16 +107,23 @@ export function useArenaState({
       setCatchAnimationKey((k) => k + 1);
       setTimeout(() => {
         setIsCatching(false);
-        setWinner(champion1Data.name.english); // Opponent wins
+        setWinner(champion1Data.name.english);
         setShowEndModal(true);
         setDialogue("The Pokémon fled!");
       }, 1200);
       setCatchAttempts((a) => a + 1);
+      setTurn((prev) => (prev === "user" ? "opponent" : "user"));
       return;
     }
     setIsCatching(true);
     setCatchAnimationKey((k) => k + 1);
-    if (!canCatchPokemon) {
+
+    const lifePercent = champ1Life / champion1Data.base.HP;
+    const catchProbability = Math.max(0.1, 1 - lifePercent); // min 10% chance
+    const random = Math.random();
+    const caught = random < catchProbability;
+
+    if (!canCatchPokemon || !caught) {
       setDialogue("He got away!");
       setTimeout(() => {
         setIsCatching(false);
@@ -131,6 +138,7 @@ export function useArenaState({
       putPokemon(champion1Data.id);
     }, 1200);
     setCatchAttempts((a) => a + 1);
+    setTurn((prev) => (prev === "user" ? "opponent" : "user"));
   };
 
   return {

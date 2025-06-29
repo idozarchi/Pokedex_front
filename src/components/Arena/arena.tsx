@@ -91,8 +91,8 @@ const Arena = ({
         </div>
         <Champion
           imageUrl={champion2Data.image?.hires || ""}
-          className={`absolute top-14 right-36 transform scale-x-[-1]${
-            isAttacking && turn === "user" ? " animate-vibrate" : ""
+          className={`absolute top-14 right-36 transform scale-x-[-1] ${
+            isAttacking && turn === "user" ? "animate-vibrate" : ""
           }${champ2Life <= 0 ? " animate-faint-right" : ""}`}
         />
       </div>
@@ -107,11 +107,7 @@ const Arena = ({
           <GameButton
             title="CATCH"
             svg={<Pokador />}
-            className={
-              champ1Life > 0 && champ1Life < champion1Data.base.HP * 0.3
-                ? "animate-vibrate"
-                : ""
-            }
+            className={canCatchPokemon ? "animate-vibrate" : ""}
             key={canCatchPokemon}
             onClick={handleCatch}
             disabled={turn === "opponent" || !canCatchPokemon}

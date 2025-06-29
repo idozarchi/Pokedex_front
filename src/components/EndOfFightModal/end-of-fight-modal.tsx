@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "../ui/Card/card";
 import { Separator } from "../ui/Separator/separator";
 import { Button } from "../ui/Button/button";
 import Champion from "../Arena/chamion";
@@ -47,20 +53,20 @@ export const EndOfFightModal = ({
             />
           </div>
           {description && description.attributes.length > 0 && (
-            <div className="flex flex-col space-x-5 mb-4 w-full bg-system-background p-4">
+            <div className="mb-4 w-full bg-system-background p-4">
               <CardTitle className="text-lg mb-4">
                 {description.title}
               </CardTitle>
-              <div className="flex flex-row space-x-5 mb-4">
+              <CardDescription className="flex flex-row gap-9">
                 {description.attributes.map((attr) => (
-                  <div className="flex flex-col space-y-2" key={attr.label}>
+                  <div className="flex flex-col space-y-1" key={attr.label}>
                     <span className="font-normal text-gray-400 mr-1 text-xs">
                       {attr.label}
                     </span>
                     <span>{attr.value}</span>
                   </div>
                 ))}
-              </div>
+              </CardDescription>
             </div>
           )}
           <Separator className="mt-2 w-full" />

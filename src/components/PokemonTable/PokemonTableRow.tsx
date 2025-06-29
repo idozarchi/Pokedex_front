@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { type Pokemon } from "../../api/fetchPokemons";
+import { type Pokemon } from "../../types/pokemon";
 import { TableCell, TableRow } from "../ui/Table/table";
 import { PokemonLogo } from "../PokemonLogo/PokemonLogo";
 import PokemonInfoModal from "../PokemonInfoModal/PokemonInfoModal";
-import { Pokador } from "../../assets/catch-button";
 
 type PokemonTableRowProps = {
   pokemon: Pokemon;
@@ -20,39 +19,32 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
         onClick={() => setOpen(true)}
       >
         <TableCell className="px-4 text-left text-lg flex items-center justify-begin gap-4">
-          <PokemonLogo imgSrc={pokemon.image?.hires || ""} />
-          {pokemon.name.english}
-          {pokemon.catched && (
-            <span className="flex-shrink-0 flex-grow-0 min-w-[60px] min-h-[60px] max-w-[60px] max-h-[60px] flex items-center">
-              <Pokador size={20} />
-            </span>
-          )}
+          <PokemonLogo imgSrc={pokemon.image || ""} />
+          {pokemon.name}
         </TableCell>
         <TableCell className="px-4 text-left">{pokemon.id}</TableCell>
         <TableCell
           className="px-4 max-w-[544px] truncate whitespace-nowrap overflow-hidden text-left"
-          title={pokemon.description}
+          title={pokemon.description || ""}
         >
-          {pokemon.description}
+          {pokemon.description || ""}
         </TableCell>
         <TableCell className="px-4 text-left">
-          Power level {pokemon.base?.Attack ?? ""}
+          Power level {pokemon.powerLevel ?? ""}
         </TableCell>
-        <TableCell className="px-4 text-left">
-          {pokemon.base?.HP ?? ""} HP
-        </TableCell>
+        <TableCell className="px-4 text-left">HP {pokemon.HP ?? ""}</TableCell>
       </TableRow>
       <PokemonInfoModal
         open={open}
         onClose={() => setOpen(false)}
         id={pokemon.id}
-        name={pokemon.name.english}
-        img={pokemon.image?.hires || ""}
-        description={pokemon.description}
-        height={pokemon.profile?.height || ""}
-        weight={pokemon.profile?.weight || ""}
-        category={pokemon.species || ""}
-        abilities={pokemon.profile?.ability?.map((a) => a[0]) || []}
+        name={pokemon.name}
+        img={pokemon.image || ""}
+        description={pokemon.description || ""}
+        height={pokemon.height || ""}
+        weight={pokemon.weight || ""}
+        abilities={pokemon.abilities?.map((a) => a[0]) || []}
+        category={pokemon.category || ""}
       />
     </>
   );
