@@ -17,6 +17,12 @@ export type ChampionData = {
   imageUrl: string;
 };
 
+export type ArenaProps = {
+  className?: string;
+  champion1Data: ChampionData;
+  champion2Data: ChampionData;
+};
+
 const Arena = ({
   className = "",
   champion1Data,
