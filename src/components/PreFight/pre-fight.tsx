@@ -11,19 +11,24 @@ export type PreFightProps = {
 const PreFight = ({
   className = "",
   imageUrl,
-  champion1Url,
-  champion2Url,
-}: PreFightProps) => {
+  opponentUrl,
+  userUrl,
+}: {
+  className?: string;
+  imageUrl: string;
+  opponentUrl: string;
+  userUrl: string;
+}) => {
   return (
     <div
       className={cn("w-full bg-cover bg-center relative", className)}
       style={{ backgroundImage: `url('${imageUrl}')` }}
     >
       <div className="absolute top-20 left-45">
-        <Champion size={230} imageUrl={champion1Url} />
+        <Champion size={230} imageUrl={userUrl} />
       </div>
       <div className="absolute bottom-20 right-45">
-        <Champion size={230} imageUrl={champion2Url} />
+        <Champion size={230} imageUrl={opponentUrl} />
       </div>
     </div>
   );
