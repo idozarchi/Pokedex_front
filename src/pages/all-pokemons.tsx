@@ -8,7 +8,11 @@ import {
   TableRow,
   TableCell,
 } from "../components/ui/Table/table";
-import { useAllPokemonsTable } from "../hooks/useAllPokemonsTable";
+import { useBackendPokemonsTable } from "../hooks/useBackendPokemonsTable";
+import {
+  fetchAllPokemonsFromBackend,
+  fetchAllPokemonsCount,
+} from "../api/fetchAllPokemons";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
 import { type Pokemon } from "../types/pokemon";
 import EmptySearch from "../components/EmptySearch/empty-search";
@@ -26,7 +30,10 @@ export default function AllPokemonsPage() {
     setFilterValue,
     total,
     pagePokemons,
-  } = useAllPokemonsTable();
+  } = useBackendPokemonsTable(
+    fetchAllPokemonsFromBackend,
+    fetchAllPokemonsCount
+  );
 
   return (
     <div className="p-6 bg-neutral-100 min-h-screen">
