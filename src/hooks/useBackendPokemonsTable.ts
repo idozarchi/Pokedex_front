@@ -40,7 +40,11 @@ export function useBackendPokemonsTable(
     }
   }, [filterValue]);
 
-  const { data: pokemonsData, isLoading: pokemonsLoading } = useQuery({
+  const {
+    data: pokemonsData,
+    isLoading: pokemonsLoading,
+    error: pokemonsError,
+  } = useQuery({
     queryKey: ["pokemons", page, pageSize, searchValue, filterValue],
     queryFn: () => {
       const { sort, order } = getSortParams();
@@ -52,10 +56,13 @@ export function useBackendPokemonsTable(
         searchValue
       );
     },
-    // keepPreviousData: true, // Removed because not supported by current react-query version
   });
 
-  const { data: totalData, isLoading: totalLoading } = useQuery({
+  const {
+    data: totalData,
+    isLoading: totalLoading,
+    error: totalError,
+  } = useQuery({
     queryKey: ["pokemons-count", searchValue],
     queryFn: () => fetchCountFn(searchValue),
   });
@@ -80,6 +87,7 @@ export function useBackendPokemonsTable(
     setPageSize,
     pokemons: getResults(pokemonsData),
     loading: pokemonsLoading || totalLoading,
+    error: pokemonsError || totalError,
     searchValue,
     setSearchValue,
     filterValue,

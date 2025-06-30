@@ -17,17 +17,38 @@ export async function fetchMyPokemonsFromBackend(
   if (search) params.append("search", search);
 
   const res = await fetch(`${BACKEND_URL}/my-pokemons?${params.toString()}`);
-  if (!res.ok) throw new Error("Failed to fetch My Pokémons");
+  if (!res.ok) {
+    let errorMsg = "Failed to fetch My Pokémons";
+    try {
+      const errorData = await res.json();
+      errorMsg = errorData.message || errorMsg;
+    } catch {
+      errorMsg = "An unknown error occurred while fetching My Pokémons.";
+    }
+    throw new Error(errorMsg);
+  }
   const data = await res.json();
   return { results: data };
 }
 
 export async function fetchMyPokemonsCount(): Promise<number> {
   const res = await fetch(`${BACKEND_URL}/my-pokemons/count`);
-  if (!res.ok) throw new Error("Failed to fetch My Pokémons count");
+  if (!res.ok) {
+    let errorMsg = "Failed to fetch My Pokémons count";
+    try {
+      const errorData = await res.json();
+      errorMsg = errorData.message || errorMsg;
+    } catch {
+      errorMsg = "An unknown error occurred while fetching My Pokémons count.";
+    }
+    throw new Error(errorMsg);
+  }
   const data = await res.json();
   if (typeof data === "object" && data !== null && "count" in data) {
     return data.count;
   }
-  return data;
+  if (typeof data === "number") {
+    return data;
+  }
+  throw new Error("Unexpected response format when fetching My Pokémons count");
 }

@@ -17,14 +17,38 @@ export async function fetchAllPokemonsFromBackend(
   if (search) params.append("search", search);
 
   const res = await fetch(`${BACKEND_URL}/all-pokemons?${params.toString()}`);
-  if (!res.ok) throw new Error("Failed to fetch Pokémon");
+  if (!res.ok) {
+    let errorMsg = "Failed to fetch Pokémon";
+    try {
+      const errorData = await res.json();
+      errorMsg = errorData.message || errorMsg;
+    } catch {
+      errorMsg = "An unknown error occurred while fetching Pokémon.";
+    }
+    throw new Error(errorMsg);
+  }
   const data = await res.json();
   return { results: data };
 }
 
-// Fetch the total count of pokemons from the backend
 export async function fetchAllPokemonsCount(): Promise<number> {
   const res = await fetch(`${BACKEND_URL}/all-pokemons/count`);
-  if (!res.ok) throw new Error("Failed to fetch Pokémon count");
-  return await res.json();
+  if (!res.ok) {
+    let errorMsg = "Failed to fetch Pokémon count";
+    try {
+      const errorData = await res.json();
+      errorMsg = errorData.message || errorMsg;
+    } catch {
+      errorMsg = "An unknown error occurred while fetching Pokémon.";
+    }
+    throw new Error(errorMsg);
+  }
+  const data = await res.json();
+  if (typeof data === "object" && data !== null && "count" in data) {
+    return data.count;
+  }
+  if (typeof data === "number") {
+    return data;
+  }
+  throw new Error("Unexpected response format");
 }

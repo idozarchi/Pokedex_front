@@ -30,10 +30,15 @@ export default function AllPokemonsPage() {
     setFilterValue,
     total,
     pagePokemons,
+    error,
   } = useBackendPokemonsTable(
     fetchAllPokemonsFromBackend,
     fetchAllPokemonsCount
   );
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="p-6 bg-neutral-100 min-h-screen">
