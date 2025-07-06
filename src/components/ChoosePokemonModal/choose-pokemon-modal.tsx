@@ -16,9 +16,14 @@ import { Separator } from "../ui/Separator/separator";
 type ChoosePokemonModalProps = {
   onSelect: (pokemon: Pokemon) => void;
   onClose: () => void;
+  cancelId?: number; // <-- Optional prop for disabling a specific pokemon
 };
 
-const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
+const ChoosePokemonModal = ({
+  onSelect,
+  onClose,
+  cancelId,
+}: ChoosePokemonModalProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Pokemon | null>(null);
@@ -60,15 +65,22 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                         : "-translate-y-1"
                       : "";
                     const isSelected = selected?.id === pokemon.id;
+                    const isDisabled =
+                      cancelId !== undefined && pokemon.id === cancelId;
                     return (
                       <button
                         key={pokemon.id}
-                        onClick={() => setSelected(pokemon)}
+                        onClick={() => !isDisabled && setSelected(pokemon)}
                         type="button"
                         className={`flex flex-row items-center rounded-full justify-center hover:border-blue-600 transition-transform border-2 ${translateY} ${
                           isSelected ? "border-blue-600" : "border-transparent"
                         }`}
-                        style={{ padding: 0 }}
+                        style={{
+                          padding: 0,
+                          opacity: isDisabled ? 0.5 : 1,
+                          pointerEvents: isDisabled ? "none" : "auto",
+                        }}
+                        disabled={isDisabled}
                       >
                         <PokemonLogo
                           name={pokemon.name}

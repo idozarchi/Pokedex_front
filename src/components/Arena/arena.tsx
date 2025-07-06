@@ -172,6 +172,9 @@ const Arena = ({
               window.location.href = `/arena?userId=${pokemon.id}`;
             }}
             onClose={() => setShowChooseModal(false)}
+            cancelId={
+              winner !== champion2Data.name ? champion2Data.id : undefined
+            }
           />
         </div>
       )}

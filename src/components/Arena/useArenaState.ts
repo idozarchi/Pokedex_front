@@ -38,7 +38,8 @@ export function useArenaState({
     if (
       champ1Life > 0 &&
       champ1Life < (champion1Data.HP || 100) * 0.5 &&
-      !isAttacking
+      !isAttacking &&
+      !showEndModal
     ) {
       interval = setInterval(() => {
         setCanCatchPokemon((tick) => tick + 1);
@@ -49,8 +50,7 @@ export function useArenaState({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [champ1Life, champion1Data.HP, isAttacking]);
-
+  }, [champ1Life, champion1Data.HP, isAttacking, showEndModal]);
   useEffect(() => {
     if (champ1Life <= 0) {
       setWinner(champion2Data.name);

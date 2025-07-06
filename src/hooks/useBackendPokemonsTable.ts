@@ -8,7 +8,7 @@ type FetchPageFn = (
   sort?: string,
   order?: string,
   search?: string
-) => Promise<{ results: Pokemon[] }>;
+) => Promise<{ results: Pokemon[]; ownedIds: number[] }>;
 
 type FetchCountFn = (search?: string) => Promise<number | { count: number }>;
 
@@ -67,7 +67,7 @@ export function useBackendPokemonsTable(
     queryFn: () => fetchCountFn(searchValue),
   });
 
-  function getResults(data: unknown): unknown[] {
+  function getResults(data: unknown): Pokemon[] {
     if (
       data &&
       typeof data === "object" &&
@@ -80,12 +80,26 @@ export function useBackendPokemonsTable(
     return [];
   }
 
+  function getOwnedIds(data: unknown): number[] {
+    if (
+      data &&
+      typeof data === "object" &&
+      data !== null &&
+      "ownedIds" in data
+    ) {
+      // @ts-expect-error: ownedIds is expected to exist on the backend response
+      return data.ownedIds;
+    }
+    return [];
+  }
+
   return {
     page,
     setPage,
     pageSize,
     setPageSize,
     pokemons: getResults(pokemonsData),
+    ownedIds: getOwnedIds(pokemonsData),
     loading: pokemonsLoading || totalLoading,
     error: pokemonsError || totalError,
     searchValue,

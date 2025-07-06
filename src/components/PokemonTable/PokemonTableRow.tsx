@@ -3,12 +3,14 @@ import { type Pokemon } from "../../types/pokemon";
 import { TableCell, TableRow } from "../ui/Table/table";
 import { PokemonLogo } from "../PokemonLogo/PokemonLogo";
 import PokemonInfoModal from "../PokemonInfoModal/PokemonInfoModal";
+import { Pokador } from "../../assets/catch-button";
 
 type PokemonTableRowProps = {
   pokemon: Pokemon;
+  owned?: boolean;
 };
 
-export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
+export function PokemonTableRow({ pokemon, owned }: PokemonTableRowProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -21,6 +23,7 @@ export function PokemonTableRow({ pokemon }: PokemonTableRowProps) {
         <TableCell className="px-4 text-left text-lg flex items-center justify-begin gap-4">
           <PokemonLogo imgSrc={pokemon.image || ""} />
           {pokemon.name}
+          {owned && <Pokador size={24} />}
         </TableCell>
         <TableCell className="px-4 text-left">{pokemon.id}</TableCell>
         <TableCell

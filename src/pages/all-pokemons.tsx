@@ -31,6 +31,7 @@ export default function AllPokemonsPage() {
     total,
     pagePokemons,
     error,
+    ownedIds,
   } = useBackendPokemonsTable(
     fetchAllPokemonsFromBackend,
     fetchAllPokemonsCount
@@ -88,6 +89,7 @@ export default function AllPokemonsPage() {
               <PokemonTableRow
                 key={(pokemon as Pokemon).id}
                 pokemon={pokemon as Pokemon}
+                owned={ownedIds.includes(pokemon.id)}
               />
             ))
           )}

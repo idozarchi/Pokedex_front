@@ -8,7 +8,7 @@ export async function fetchAllPokemonsFromBackend(
   sort?: string,
   order?: string,
   search?: string
-): Promise<{ results: Pokemon[] }> {
+): Promise<{ results: Pokemon[]; ownedIds: number[] }> {
   const params = new URLSearchParams();
   if (limit) params.append("limit", limit.toString());
   if (offset) params.append("offset", offset.toString());
@@ -28,7 +28,8 @@ export async function fetchAllPokemonsFromBackend(
     throw new Error(errorMsg);
   }
   const data = await res.json();
-  return { results: data };
+  // Expecting: { pokemons: Pokemon[], ownedIds: number[] }
+  return { results: data.pokemons, ownedIds: data.ownedIds };
 }
 
 export async function fetchAllPokemonsCount(): Promise<number> {
