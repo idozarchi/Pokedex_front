@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Headline } from "../Headline/headline";
 import { Filter } from "../ui/Filter/filter";
-import type { Pokemon } from "../../api/fetchPokemons";
+import type { Pokemon } from "../../types/pokemon";
 import { PokemonLogo } from "../PokemonLogo/PokemonLogo";
 
 // All strings and constants are imported from the constants file when it will merged
@@ -41,20 +41,18 @@ export const ArenaHeader = ({
     label: (
       <div className="flex items-center justify-between w-full min-w-[256px]">
         <div className="flex items-center gap-3">
-          <PokemonLogo size={36} imgSrc={pokemon.image?.thumbnail} />
+          <PokemonLogo size={36} imgSrc={pokemon.image} />
           <div className="flex flex-col">
             <span className="font-medium text-base leading-tight">
-              {typeof pokemon.name === "string"
-                ? pokemon.name
-                : pokemon.name.english}
+              {typeof pokemon.name === "string" ? pokemon.name : pokemon.name}
             </span>
             <span className="text-xs text-blue-700">
-              Speed: {pokemon.base?.Speed ?? 0}
+              Speed: {pokemon.speed ?? 0}
             </span>
           </div>
         </div>
         <span className="font-semibold text-base">
-          Pwr. {pokemon.base?.Attack ?? 0}
+          Pwr. {pokemon.powerLevel ?? 0}
         </span>
       </div>
     ),

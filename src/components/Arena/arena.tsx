@@ -8,7 +8,7 @@ import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
 import { useArenaState } from "./useArenaState";
 import EndOfFightModal from "../EndOfFightModal/end-of-fight-modal";
 import ChoosePokemonModal from "../ChoosePokemonModal/choose-pokemon-modal";
-import type { Pokemon } from "../../api/fetchPokemons";
+import type { Pokemon } from "../../types/pokemon";
 
 export type ChampionData = {
   id: number;
@@ -24,11 +24,13 @@ const Arena = ({
   champion1Data,
   champion2Data,
   starter,
+  fightId,
 }: {
   className?: string;
   champion1Data: Pokemon;
   champion2Data: Pokemon;
   starter: "user" | "opponent";
+  fightId: string;
 }) => {
   const {
     turn,
@@ -45,7 +47,7 @@ const Arena = ({
     handleCatch,
     isCatching,
     catchAnimationKey,
-  } = useArenaState({ champion1Data, champion2Data, starter });
+  } = useArenaState({ champion1Data, champion2Data, starter, fightId });
 
   return (
     <div
@@ -57,17 +59,17 @@ const Arena = ({
       <div className="min-w-[50%] h-[50%] absolute top-0 right-0 m-2">
         <div className="absolute top-0 right-0 m-3 w-[40%]">
           <ChampionInfo
-            maxProgress={champion1Data.base.HP}
+            maxProgress={champion1Data.HP || 100}
             progress={champ1Life}
             pokemon={{
-              name: champion1Data.name.english,
-              speed: champion1Data.base.Speed,
+              name: champion1Data.name,
+              speed: champion1Data.speed || 0,
             }}
             disabled={turn !== "opponent"}
           />
         </div>
         <Champion
-          imageUrl={champion1Data.image?.hires || ""}
+          imageUrl={champion1Data.image || ""}
           className={`absolute bottom-14 left-36 ${
             isAttacking && turn === "opponent" ? " animate-vibrate" : ""
           }${champ1Life <= 0 ? " animate-faint-right" : ""}`}
@@ -80,17 +82,17 @@ const Arena = ({
       <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-2">
         <div className="absolute bottom-0 left-0 m-3 w-[40%]">
           <ChampionInfo
-            maxProgress={champion2Data.base.HP}
+            maxProgress={champion2Data.HP || 100}
             progress={champ2Life}
             pokemon={{
-              name: champion2Data.name.english,
-              speed: champion2Data.base.Speed,
+              name: champion2Data.name,
+              speed: champion2Data.speed || 0,
             }}
             disabled={turn !== "user"}
           />
         </div>
         <Champion
-          imageUrl={champion2Data.image?.hires || ""}
+          imageUrl={champion2Data.image || ""}
           className={`absolute top-14 right-36 transform scale-x-[-1] ${
             isAttacking && turn === "user" ? "animate-vibrate" : ""
           }${champ2Life <= 0 ? " animate-faint-right" : ""}`}
@@ -131,29 +133,28 @@ const Arena = ({
       {showEndModal && (
         <EndOfFightModal
           title={
-            winner === champion1Data.name.english
-              ? `${champion2Data.name.english} Lost the match`
-              : `You Caught ${champion1Data.name.english}!`
+            winner === champion1Data.name
+              ? `${champion2Data.name} Lost the match`
+              : `You Caught ${champion1Data.name}!`
           }
           winner={winner || ""}
           winnerImageUrl={
-            winner === champion1Data.name.english
-              ? champion2Data.image?.hires || ""
-              : champion1Data.image?.hires || ""
+            winner === champion1Data.name
+              ? champion2Data.image || ""
+              : champion1Data.image || ""
           }
           description={
-            winner !== champion1Data.name.english
+            winner !== champion1Data.name
               ? {
-                  title: champion1Data.name.english,
+                  title: champion1Data.name,
                   attributes: [
-                    { label: "Speed", value: String(champion1Data.base.Speed) },
-                    { label: "Category", value: champion1Data.species || "?" },
+                    { label: "Speed", value: String(champion1Data.speed) },
+                    { label: "Category", value: champion1Data.category || "?" },
                     {
                       label: "Abilities",
                       value:
-                        champion1Data.profile?.ability
-                          ?.map((a) => a[0])
-                          .join(", ") || "",
+                        champion1Data.abilities?.map((a) => a[0]).join(", ") ||
+                        "",
                     },
                   ],
                 }

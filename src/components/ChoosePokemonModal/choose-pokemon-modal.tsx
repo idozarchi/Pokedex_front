@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchMyPokemons } from "../../api/fetchPokemons";
-import type { Pokemon } from "../../api/fetchPokemons";
+import { fetchMyPokemonsFromBackend } from "../../api/fetchMyPokemons";
+import type { Pokemon } from "../../types/pokemon";
 import PokemonLogo from "../PokemonLogo/PokemonLogo";
 import {
   Card,
@@ -24,10 +24,11 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
   const [selected, setSelected] = useState<Pokemon | null>(null);
 
   useEffect(() => {
-    fetchMyPokemons(100).then((data) => {
-      setPokemons(Array.isArray(data.results) ? data.results : []);
-      setLoading(false);
-    });
+    fetchMyPokemonsFromBackend(100)
+      .then((data) => {
+        setPokemons(Array.isArray(data.results) ? data.results : []);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
@@ -70,19 +71,8 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                         style={{ padding: 0 }}
                       >
                         <PokemonLogo
-                          name={
-                            typeof pokemon.name === "string"
-                              ? pokemon.name
-                              : pokemon.name.english
-                          }
-                          imgSrc={
-                            typeof pokemon.image === "string"
-                              ? pokemon.image
-                              : pokemon.image?.hires ||
-                                pokemon.image?.thumbnail ||
-                                pokemon.image?.sprite ||
-                                ""
-                          }
+                          name={pokemon.name}
+                          imgSrc={pokemon.image || ""}
                           size={86}
                         />
                       </button>
