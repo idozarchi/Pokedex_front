@@ -47,7 +47,6 @@ export default function ArenaPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  // When user selects a new Pokémon, start a new fight
   const handlePokemonChange = async (newPokemon: Pokemon) => {
     setCurrentUser(newPokemon);
     if (fightData) {
