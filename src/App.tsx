@@ -11,6 +11,7 @@ import AllPokemonsPage from "./pages/all-pokemons";
 import MyPokemonsPage from "./pages/my-pokemons";
 import ArenaPage from "./pages/arena-page";
 import { Pokador } from "./assets/catch-button";
+import LoginPage from "./pages/login";
 
 const AppContent = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const AppContent = () => {
     <>
       <Header items={items} />
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/all-pokemons" element={<AllPokemonsPage />} />
         <Route path="/my-pokemons" element={<MyPokemonsPage />} />
         <Route path="/arena" element={<ArenaPage />} />
