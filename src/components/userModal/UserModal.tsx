@@ -24,7 +24,6 @@ interface UserModalProps {
 
 function UserModal({
   isOpen,
-  onClose,
   title,
   inputs,
   buttonLabel,
