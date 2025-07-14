@@ -1,0 +1,208 @@
+import { signIn, signUp, confirmSignUp } from "aws-amplify/auth";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
+async function createUserInDatabase(
+  userId: string,
+  email: string
+): Promise<void> {
+  const userData = {
+    userId,
+    userName: email.split("@")[0],
+    email,
+    ownedPokemons: [25],
+    fights: [],
+  };
+
+  const response = await fetch(`${BACKEND_URL}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to create user in database: ${response.statusText}`
+    );
+  }
+
+  console.log("User created in database successfully");
+}
+
+export type LoginData = {
+  email: string;
+  password: string;
+};
+
+export type SignupData = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export async function handleLogin(
+  data: LoginData,
+  onSuccess: () => void,
+  onError: (message: string) => void
+): Promise<void> {
+  try {
+    const signInResult = await signIn({
+      username: data.email.trim(),
+      password: data.password,
+    });
+
+    if (signInResult.isSignedIn) {
+      onSuccess();
+    } else {
+      let message = `Additional step required: ${signInResult.nextStep.signInStep}`;
+
+      if (signInResult.nextStep.signInStep === "CONFIRM_SIGN_UP") {
+        message =
+          "Please check your email and confirm your account before logging in.";
+      } else if (
+        signInResult.nextStep.signInStep ===
+        "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"
+      ) {
+        message = "You need to set a new password.";
+      }
+
+      onError(message);
+    }
+  } catch (error: any) {
+    console.error("=== LOGIN ERROR DETAILS ===");
+    console.error("Full error object:", error);
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+
+    let errorMessage = "Login failed";
+
+    if (error.name === "UserNotConfirmedException") {
+      errorMessage =
+        "Please check your email and confirm your account before logging in.";
+    } else if (error.name === "NotAuthorizedException") {
+      errorMessage = "Invalid email or password.";
+    } else if (error.name === "UserNotFoundException") {
+      errorMessage = "No account found with this email. Please sign up first.";
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    onError(errorMessage);
+  }
+}
+
+export async function handleSignup(
+  data: SignupData,
+  onSuccess: () => void,
+  onError: (message: string) => void,
+  onVerificationRequired?: (
+    email: string,
+    verifyFn: (code: string) => Promise<void>
+  ) => void
+): Promise<void> {
+  if (data.password !== data.confirmPassword) {
+    onError("Passwords do not match");
+    return;
+  }
+
+  try {
+    const signUpResult = await signUp({
+      username: data.email,
+      password: data.password,
+      options: {
+        userAttributes: {
+          email: data.email,
+        },
+      },
+    });
+
+    // Just proceed regardless of verification requirement
+    console.log("Signup result:", signUpResult);
+
+    // If verification is required, call the verification callback
+    if (signUpResult.nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
+      if (onVerificationRequired) {
+        const verifyFn = async (code: string): Promise<void> => {
+          try {
+            await confirmSignUp({
+              username: data.email,
+              confirmationCode: code,
+            });
+            console.log("✅ User confirmed successfully");
+
+            // Create user in database after successful verification
+            if (signUpResult.userId) {
+              await createUserInDatabase(signUpResult.userId, data.email);
+            }
+
+            // Call success callback
+            onSuccess();
+          } catch (error: any) {
+            if (error.name === "CodeMismatchException") {
+              throw new Error("Invalid verification code. Please try again.");
+            } else if (error.message?.includes("database")) {
+              throw new Error(
+                "Account verified but profile setup failed. Please contact support."
+              );
+            } else {
+              throw new Error(error.message || "Verification failed");
+            }
+          }
+        };
+
+        onVerificationRequired(data.email, verifyFn);
+        return; // Return here but verification will handle DB creation
+      } else {
+        const verificationCode = prompt(
+          "Please check your email and enter the verification code:"
+        );
+
+        if (verificationCode) {
+          try {
+            await confirmSignUp({
+              username: data.email,
+              confirmationCode: verificationCode.trim(),
+            });
+            console.log("User confirmed successfully");
+          } catch (confirmError: any) {
+            onError(`Verification failed: ${confirmError.message}`);
+            return;
+          }
+        } else {
+          onError("Verification code is required to complete signup");
+          return;
+        }
+      }
+    }
+
+    try {
+      if (signUpResult.userId) {
+        await createUserInDatabase(signUpResult.userId, data.email);
+      }
+
+      alert("Signup and verification successful! You can now login.");
+      onSuccess();
+    } catch (dbError: any) {
+      console.error("Error creating user in database:", dbError);
+      onError(
+        "Account created but there was an issue setting up your profile. Please contact support if you experience issues."
+      );
+      return;
+    }
+  } catch (error: any) {
+    let errorMessage = "Signup failed";
+
+    if (error.name === "UsernameExistsException") {
+      errorMessage =
+        "An account with this email already exists. Please login instead.";
+    } else if (error.name === "InvalidParameterException") {
+      errorMessage = "Invalid email or password format.";
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    onError(errorMessage);
+  }
+}

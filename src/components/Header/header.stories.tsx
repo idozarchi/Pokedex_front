@@ -13,7 +13,13 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {
   render: () => (
     <div className="bg-gray-50 min-h-[100px]">
-      <Header />
+      <Header
+        items={[
+          { name: "All Pokémons", href: "/all-pokemons" },
+          { name: "My Pokémons", href: "/my-pokemons" },
+        ]}
+        onLogoClick={() => console.log("Logo clicked")}
+      />
     </div>
   ),
 };

@@ -5,7 +5,7 @@ import GameButton from "./game-button";
 import { AttackButton } from "../../assets/attack-button";
 import { Pokador } from "../../assets/catch-button";
 import { ATTACK_BUTTON_BACKGROUND_SRC } from "../../constants/header";
-import { useArenaState } from "./useArenaState";
+import { useArenaState } from "../../hooks/useArenaState";
 import EndOfFightModal from "../EndOfFightModal/end-of-fight-modal";
 import ChoosePokemonModal from "../ChoosePokemonModal/choose-pokemon-modal";
 import type { Pokemon } from "../../types/pokemon";
