@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/login";
 import HomePage from "./pages/home";
+import "./amplifyConfig"; // Adjust the path if needed
 
 function App() {
   return (

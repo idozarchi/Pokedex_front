@@ -1,22 +1,30 @@
 import { type Pokemon } from "../types/pokemon";
+import { getAuthHeaders } from "./auth";
+import { getCurrentUser } from "aws-amplify/auth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
-export async function fetchMyPokemonsFromBackend(
-  limit: number,
-  offset: number = 0,
-  sort?: string,
-  order?: string,
-  search?: string
-): Promise<{ results: Pokemon[] }> {
-  const params = new URLSearchParams();
-  if (limit) params.append("limit", limit.toString());
-  if (offset) params.append("offset", offset.toString());
-  if (sort) params.append("sort", sort);
-  if (order) params.append("order", order);
-  if (search) params.append("search", search);
+async function getCurrentUserId(): Promise<string> {
+  try {
+    const user = await getCurrentUser();
+    return user.userId;
+  } catch (error) {
+    console.error("Error getting current user ID:", error);
+    throw new Error("User not authenticated");
+  }
+}
 
-  const res = await fetch(`${BACKEND_URL}/my-pokemons?${params.toString()}`);
+export async function fetchMyPokemonsFromBackend(
+  userId?: string
+): Promise<{ results: Pokemon[] }> {
+  const targetUserId = userId || (await getCurrentUserId());
+
+  const headers = await getAuthHeaders();
+
+  const res = await fetch(`${BACKEND_URL}/users/${targetUserId}/pokemons`, {
+    headers,
+  });
+
   if (!res.ok) {
     let errorMsg = "Failed to fetch My Pokémons";
     try {
@@ -31,24 +39,7 @@ export async function fetchMyPokemonsFromBackend(
   return { results: data };
 }
 
-export async function fetchMyPokemonsCount(): Promise<number> {
-  const res = await fetch(`${BACKEND_URL}/my-pokemons/count`);
-  if (!res.ok) {
-    let errorMsg = "Failed to fetch My Pokémons count";
-    try {
-      const errorData = await res.json();
-      errorMsg = errorData.message || errorMsg;
-    } catch {
-      errorMsg = "An unknown error occurred while fetching My Pokémons count.";
-    }
-    throw new Error(errorMsg);
-  }
-  const data = await res.json();
-  if (typeof data === "object" && data !== null && "count" in data) {
-    return data.count;
-  }
-  if (typeof data === "number") {
-    return data;
-  }
-  throw new Error("Unexpected response format when fetching My Pokémons count");
+export async function fetchMyPokemonsCount(userId?: string): Promise<number> {
+  const { results } = await fetchMyPokemonsFromBackend(userId);
+  return results.length;
 }

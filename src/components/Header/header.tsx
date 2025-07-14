@@ -14,16 +14,22 @@ type HeaderMenuItem = {
 
 type HeaderProps = {
   items: HeaderMenuItem[];
+  onLogoClick?: () => void;
 };
 
-export function Header({ items }: HeaderProps) {
+export function Header({ items, onLogoClick }: HeaderProps) {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
   return (
     <>
       <header className="w-full flex items-center justify-between px-6 bg-white border-b h-20">
         <div className="flex items-center gap-6 flex-shrink-0">
-          <HeaderLogo src={HEADER_LOGO_SRC} alt="Pokédex Logo" />
+          <HeaderLogo
+            src={HEADER_LOGO_SRC}
+            alt="Pokédex Logo"
+            onClick={onLogoClick}
+          />
           <HeaderMenu items={items} />
         </div>
         <Button size={"lg"} onClick={() => setShowModal(true)}>

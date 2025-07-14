@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import type { Pokemon } from "../../types/pokemon";
+import type { Pokemon } from "../types/pokemon";
 
-import { putPokemon } from "../../api/putPokemon";
-import { attack as attackApi } from "../../api/attack";
-import { catchPokemon as catchApi } from "../../api/catchPokemon";
+import { attack as attackApi } from "../api/attack";
+import { catchPokemon as catchApi } from "../api/catchPokemon";
 
 export function useArenaState({
   champion1Data,
@@ -56,7 +55,6 @@ export function useArenaState({
       setWinner(champion2Data.name);
       setShowEndModal(true);
       setDialogue(`${champion1Data.name} fainted!`);
-      putPokemon(champion1Data.id);
     } else if (champ2Life <= 0) {
       setWinner(champion1Data.name);
       setShowEndModal(true);
@@ -126,7 +124,6 @@ export function useArenaState({
         setShowEndModal(true);
         setDialogue(result.message);
         if (result.winnerId === champion2Data.id) {
-          putPokemon(champion1Data.id);
         }
       } else {
         setDialogue(result.message);

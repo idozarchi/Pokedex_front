@@ -1,4 +1,5 @@
 import { type Pokemon } from "../types/pokemon";
+import { getAuthHeaders } from "./auth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
@@ -16,7 +17,12 @@ export async function fetchAllPokemonsFromBackend(
   if (order) params.append("order", order);
   if (search) params.append("search", search);
 
-  const res = await fetch(`${BACKEND_URL}/all-pokemons?${params.toString()}`);
+  const headers = await getAuthHeaders();
+
+  const res = await fetch(`${BACKEND_URL}/all-pokemons?${params.toString()}`, {
+    headers,
+  });
+
   if (!res.ok) {
     let errorMsg = "Failed to fetch Pokémon";
     try {
@@ -28,12 +34,15 @@ export async function fetchAllPokemonsFromBackend(
     throw new Error(errorMsg);
   }
   const data = await res.json();
-  // Expecting: { pokemons: Pokemon[], ownedIds: number[] }
   return { results: data.pokemons, ownedIds: data.ownedIds };
 }
 
 export async function fetchAllPokemonsCount(): Promise<number> {
-  const res = await fetch(`${BACKEND_URL}/all-pokemons/count`);
+  const headers = await getAuthHeaders();
+  const res = await fetch(`${BACKEND_URL}/all-pokemons/count`, {
+    headers,
+  });
+
   if (!res.ok) {
     let errorMsg = "Failed to fetch Pokémon count";
     try {

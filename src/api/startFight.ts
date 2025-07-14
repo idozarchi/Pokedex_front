@@ -1,4 +1,7 @@
 import { type Pokemon } from "../types/pokemon";
+import { getAuthHeaders } from "./auth";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 export type StartFightResponse = {
   fightId: string;
@@ -10,14 +13,23 @@ export type StartFightResponse = {
 export async function startFight(
   userPokemonId: number
 ): Promise<StartFightResponse> {
-  const response = await fetch("http://localhost:3000/fight/start", {
+  const headers = await getAuthHeaders({ "Content-Type": "application/json" });
+
+  console.log("Starting fight with Pokemon ID:", userPokemonId);
+  console.log("Auth headers:", headers ? "Present" : "Missing");
+
+  const response = await fetch(`${BACKEND_URL}/fight/start`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ userPokemonId }),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to start fight");
+    const error = await response.json().catch(() => ({}));
+    console.error("Fight start error:", error);
+    throw new Error(
+      error.message || `Failed to start fight (${response.status})`
+    );
   }
 
   const data = await response.json();
