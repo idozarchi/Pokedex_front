@@ -1,4 +1,10 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Header } from "../components/Header/header";
 import AllPokemonsPage from "./all-pokemons";
 import MyPokemonsPage from "./my-pokemons";
@@ -7,6 +13,12 @@ import { Pokador } from "../assets/catch-button";
 
 const HomeContent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate("/login");
+  };
+
   const items = [
     {
       name: "All Pokémons",
@@ -29,7 +41,7 @@ const HomeContent = () => {
 
   return (
     <>
-      <Header items={items} />
+      <Header items={items} onLogoClick={handleLogoClick} />
       <Routes>
         <Route path="/all-pokemons" element={<AllPokemonsPage />} />
         <Route path="/my-pokemons" element={<MyPokemonsPage />} />

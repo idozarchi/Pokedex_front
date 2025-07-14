@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HeaderLogo from "../components/Header/header-logo";
 import { HEADER_LOGO_SRC } from "../constants/header";
 import { LoginBg } from "../assets/login-bg";
 import UserModal from "../components/userModal/UserModal";
+import { VerificationModal } from "../components/VerificationModal/verification-modal";
+import { signOut } from "aws-amplify/auth";
+import { handleLogin, handleSignup } from "../api/auth-handlers";
+
+(window as any).signOut = signOut;
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +17,13 @@ export default function LoginPage() {
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirm, setSignupConfirm] = useState("");
   const [modalType, setModalType] = useState<"login" | "signup">("login");
+  const [loading, setLoading] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const [verificationFn, setVerificationFn] = useState<
+    ((code: string) => Promise<void>) | null
+  >(null);
+  const navigate = useNavigate();
 
   const loginInputs = [
     {
@@ -58,16 +71,76 @@ export default function LoginPage() {
     },
   ];
 
+  const onLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await handleLogin(
+        { email, password },
+        () => {
+          alert("Login successful!");
+          navigate("/all-pokemons");
+        },
+        (errorMessage) => {
+          alert(errorMessage);
+        }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await handleSignup(
+        {
+          email: signupEmail,
+          password: signupPassword,
+          confirmPassword: signupConfirm,
+        },
+        () => {
+          setModalType("login");
+        },
+        (errorMessage) => {
+          alert(errorMessage);
+        },
+        (email, verifyFn) => {
+          setVerificationEmail(email);
+          setVerificationFn(() => verifyFn);
+          setShowVerification(true);
+        }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerification = async (code: string) => {
+    if (verificationFn) {
+      await verificationFn(code);
+      setShowVerification(false);
+      setModalType("login");
+      alert("Signup and verification successful! You can now login.");
+    }
+  };
+
+  const handleVerificationCancel = () => {
+    setShowVerification(false);
+    setVerificationFn(null);
+    setVerificationEmail("");
+  };
+
   const modalProps =
     modalType === "login"
       ? {
           title: "Login",
           inputs: loginInputs,
-          buttonLabel: "Login",
-          onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            // handle login logic here
-          },
+          buttonLabel: loading ? "Logging in..." : "Login",
+          onSubmit: onLoginSubmit,
           className: "w-50",
           label: (
             <>
@@ -94,11 +167,8 @@ export default function LoginPage() {
       : {
           title: "Sign Up",
           inputs: signupInputs,
-          buttonLabel: "Sign Up",
-          onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            // handle signup logic here
-          },
+          buttonLabel: loading ? "Signing up..." : "Sign Up",
+          onSubmit: onSignupSubmit,
           className: "w-50",
           label: (
             <>
@@ -125,6 +195,12 @@ export default function LoginPage() {
           isOpen={true}
           onClose={() => setModalType("login")}
           {...modalProps}
+        />
+        <VerificationModal
+          isOpen={showVerification}
+          email={verificationEmail}
+          onVerify={handleVerification}
+          onCancel={handleVerificationCancel}
         />
       </div>
     </div>
