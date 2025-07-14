@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchMyPokemons } from "../../api/fetchPokemons";
-import type { Pokemon } from "../../api/fetchPokemons";
+import { fetchMyPokemonsFromBackend } from "../../api/fetchMyPokemons";
+import type { Pokemon } from "../../types/pokemon";
 import PokemonLogo from "../PokemonLogo/PokemonLogo";
 import {
   Card,
@@ -16,18 +16,24 @@ import { Separator } from "../ui/Separator/separator";
 type ChoosePokemonModalProps = {
   onSelect: (pokemon: Pokemon) => void;
   onClose: () => void;
+  cancelId?: number; // <-- Optional prop for disabling a specific pokemon
 };
 
-const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
+const ChoosePokemonModal = ({
+  onSelect,
+  onClose,
+  cancelId,
+}: ChoosePokemonModalProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Pokemon | null>(null);
 
   useEffect(() => {
-    fetchMyPokemons(100).then((data) => {
-      setPokemons(Array.isArray(data.results) ? data.results : []);
-      setLoading(false);
-    });
+    fetchMyPokemonsFromBackend(100)
+      .then((data) => {
+        setPokemons(Array.isArray(data.results) ? data.results : []);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
@@ -59,30 +65,26 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
                         : "-translate-y-1"
                       : "";
                     const isSelected = selected?.id === pokemon.id;
+                    const isDisabled =
+                      cancelId !== undefined && pokemon.id === cancelId;
                     return (
                       <button
                         key={pokemon.id}
-                        onClick={() => setSelected(pokemon)}
+                        onClick={() => !isDisabled && setSelected(pokemon)}
                         type="button"
                         className={`flex flex-row items-center rounded-full justify-center hover:border-blue-600 transition-transform border-2 ${translateY} ${
                           isSelected ? "border-blue-600" : "border-transparent"
                         }`}
-                        style={{ padding: 0 }}
+                        style={{
+                          padding: 0,
+                          opacity: isDisabled ? 0.5 : 1,
+                          pointerEvents: isDisabled ? "none" : "auto",
+                        }}
+                        disabled={isDisabled}
                       >
                         <PokemonLogo
-                          name={
-                            typeof pokemon.name === "string"
-                              ? pokemon.name
-                              : pokemon.name.english
-                          }
-                          imgSrc={
-                            typeof pokemon.image === "string"
-                              ? pokemon.image
-                              : pokemon.image?.hires ||
-                                pokemon.image?.thumbnail ||
-                                pokemon.image?.sprite ||
-                                ""
-                          }
+                          name={pokemon.name}
+                          imgSrc={pokemon.image || ""}
                           size={86}
                         />
                       </button>

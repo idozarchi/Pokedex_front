@@ -2,13 +2,13 @@ import { type Pokemon } from "../types/pokemon";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
-export async function fetchAllPokemonsFromBackend(
+export async function fetchMyPokemonsFromBackend(
   limit: number,
   offset: number = 0,
   sort?: string,
   order?: string,
   search?: string
-): Promise<{ results: Pokemon[]; ownedIds: number[] }> {
+): Promise<{ results: Pokemon[] }> {
   const params = new URLSearchParams();
   if (limit) params.append("limit", limit.toString());
   if (offset) params.append("offset", offset.toString());
@@ -16,31 +16,30 @@ export async function fetchAllPokemonsFromBackend(
   if (order) params.append("order", order);
   if (search) params.append("search", search);
 
-  const res = await fetch(`${BACKEND_URL}/all-pokemons?${params.toString()}`);
+  const res = await fetch(`${BACKEND_URL}/my-pokemons?${params.toString()}`);
   if (!res.ok) {
-    let errorMsg = "Failed to fetch Pokémon";
+    let errorMsg = "Failed to fetch My Pokémons";
     try {
       const errorData = await res.json();
       errorMsg = errorData.message || errorMsg;
     } catch {
-      errorMsg = "An unknown error occurred while fetching Pokémon.";
+      errorMsg = "An unknown error occurred while fetching My Pokémons.";
     }
     throw new Error(errorMsg);
   }
   const data = await res.json();
-  // Expecting: { pokemons: Pokemon[], ownedIds: number[] }
-  return { results: data.pokemons, ownedIds: data.ownedIds };
+  return { results: data };
 }
 
-export async function fetchAllPokemonsCount(): Promise<number> {
-  const res = await fetch(`${BACKEND_URL}/all-pokemons/count`);
+export async function fetchMyPokemonsCount(): Promise<number> {
+  const res = await fetch(`${BACKEND_URL}/my-pokemons/count`);
   if (!res.ok) {
-    let errorMsg = "Failed to fetch Pokémon count";
+    let errorMsg = "Failed to fetch My Pokémons count";
     try {
       const errorData = await res.json();
       errorMsg = errorData.message || errorMsg;
     } catch {
-      errorMsg = "An unknown error occurred while fetching Pokémon.";
+      errorMsg = "An unknown error occurred while fetching My Pokémons count.";
     }
     throw new Error(errorMsg);
   }
@@ -51,5 +50,5 @@ export async function fetchAllPokemonsCount(): Promise<number> {
   if (typeof data === "number") {
     return data;
   }
-  throw new Error("Unexpected response format");
+  throw new Error("Unexpected response format when fetching My Pokémons count");
 }

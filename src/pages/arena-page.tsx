@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Arena from "../components/Arena/arena";
 import { ArenaHeader } from "../components/ArenaHeader/areana-header";
@@ -6,8 +6,9 @@ import PreFight from "../components/PreFight/pre-fight";
 import { PREFIGHT_BACKGROUND_SRC } from "../constants/header";
 import { startFight } from "../api/startFight";
 import type { StartFightResponse } from "../api/startFight";
-import { fetchMyPokemons } from "../api/fetchPokemons";
-import type { Pokemon } from "../api/fetchPokemons";
+import { fetchMyPokemonsFromBackend } from "../api/fetchMyPokemons";
+import type { Pokemon } from "../types/pokemon";
+import { switchUserPokemon } from "../api/switchUserPokemon";
 
 export default function ArenaPage() {
   const location = useLocation();
@@ -20,33 +21,50 @@ export default function ArenaPage() {
   const [myPokemons, setMyPokemons] = useState<Pokemon[]>([]);
   const [currentUser, setCurrentUser] = useState<Pokemon | null>(null);
 
+  // Fetch user's Pokémons
   useEffect(() => {
-    if (userId) {
-      startFight(userId)
-        .then((data) => {
-          setFightData(data);
-          setCurrentUser(data.user);
-        })
-        .catch(console.error);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    fetchMyPokemons(50)
+    fetchMyPokemonsFromBackend(50)
       .then((data) => {
         setMyPokemons(data.results);
       })
       .catch(console.error);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowPreFight(false), 3000);
-    return () => clearTimeout(timer);
+  const startFightWithPokemon = useCallback((pokemonId: number) => {
+    startFight(pokemonId)
+      .then((data) => {
+        setFightData(data);
+        setCurrentUser(data.user);
+        setShowPreFight(true);
+      })
+      .catch(console.error);
   }, []);
 
-  const handlePokemonChange = (newPokemon: Pokemon) => {
+  useEffect(() => {
+    if (userId) {
+      startFightWithPokemon(userId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  const handlePokemonChange = async (newPokemon: Pokemon) => {
     setCurrentUser(newPokemon);
+    if (fightData) {
+      try {
+        await switchUserPokemon(fightData.fightId, newPokemon.id);
+        // Optionally: refetch fightData here if you want to sync HP, etc.
+      } catch (e) {
+        console.error("Failed to update backend:", e);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (showPreFight) {
+      const timer = setTimeout(() => setShowPreFight(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPreFight]);
 
   if (!fightData || !currentUser) {
     return <div className="p-10">Loading...</div>;
@@ -69,18 +87,8 @@ export default function ArenaPage() {
           <PreFight
             className="w-full h-[90%]"
             imageUrl={PREFIGHT_BACKGROUND_SRC}
-            opponentUrl={
-              opponent?.image?.hires ||
-              opponent?.image?.thumbnail ||
-              opponent?.image?.sprite ||
-              ""
-            }
-            userUrl={
-              currentUser?.image?.hires ||
-              currentUser?.image?.thumbnail ||
-              currentUser?.image?.sprite ||
-              ""
-            }
+            opponentUrl={opponent?.image || ""}
+            userUrl={currentUser?.image || ""}
           />
         ) : (
           <Arena
@@ -88,6 +96,7 @@ export default function ArenaPage() {
             champion1Data={opponent}
             champion2Data={currentUser}
             starter={fightData.starter}
+            fightId={fightData.fightId}
           />
         )}
       </div>

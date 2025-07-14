@@ -8,9 +8,14 @@ import {
   TableRow,
   TableCell,
 } from "../components/ui/Table/table";
-import { usePokemonsTable } from "../hooks/usePokemonsTable";
+import { useBackendPokemonsTable } from "../hooks/useBackendPokemonsTable";
+import {
+  fetchMyPokemonsFromBackend,
+  fetchMyPokemonsCount,
+} from "../api/fetchMyPokemons";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
-import { fetchMyPokemons } from "../api/fetchPokemons";
+import { type Pokemon } from "../types/pokemon";
+import EmptySearch from "../components/EmptySearch/empty-search";
 
 export default function MyPokemonsPage() {
   const {
@@ -25,7 +30,12 @@ export default function MyPokemonsPage() {
     setFilterValue,
     total,
     pagePokemons,
-  } = usePokemonsTable(fetchMyPokemons);
+    error,
+  } = useBackendPokemonsTable(fetchMyPokemonsFromBackend, fetchMyPokemonsCount);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="p-6 bg-neutral-100 min-h-screen">
@@ -64,9 +74,18 @@ export default function MyPokemonsPage() {
                 Loading...
               </TableCell>
             </TableRow>
+          ) : pagePokemons.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} className="p-0 border-0">
+                <EmptySearch text="No Pokémons were found" />
+              </TableCell>
+            </TableRow>
           ) : (
             pagePokemons.map((pokemon) => (
-              <PokemonTableRow key={pokemon.id} pokemon={pokemon} />
+              <PokemonTableRow
+                key={(pokemon as Pokemon).id}
+                pokemon={pokemon as Pokemon}
+              />
             ))
           )}
         </TableBody>

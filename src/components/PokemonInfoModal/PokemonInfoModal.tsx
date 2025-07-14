@@ -61,7 +61,7 @@ export function PokemonInfoModal({
           className="mb-1 w-[180px] h-[165px] mx-auto"
         />
         <CardContent>
-          <CardDescription className="bg-neutral-100 p-4">
+          <CardDescription className="bg-neutral-100 p-4 rounded-sm">
             <span className="mb-2">{description}</span>
             <Separator className="my-4" />
             <div className="flex flex-row space-x-5">
