@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import HeaderLogo from "../components/Header/header-logo";
 import { HEADER_LOGO_SRC } from "../constants/header";
 import { LoginBg } from "../assets/login-bg";
@@ -79,11 +80,14 @@ export default function LoginPage() {
       await handleLogin(
         { email, password },
         () => {
-          alert("Login successful!");
-          navigate("/all-pokemons");
+          toast.success("Login successful!");
+          // Small delay to let user see the success message
+          setTimeout(() => {
+            navigate("/all-pokemons");
+          }, 1500);
         },
         (errorMessage) => {
-          alert(errorMessage);
+          toast.error(errorMessage);
         }
       );
     } finally {
@@ -106,7 +110,7 @@ export default function LoginPage() {
           setModalType("login");
         },
         (errorMessage) => {
-          alert(errorMessage);
+          toast.error(errorMessage);
         },
         (email, verifyFn) => {
           setVerificationEmail(email);
@@ -124,7 +128,7 @@ export default function LoginPage() {
       await verificationFn(code);
       setShowVerification(false);
       setModalType("login");
-      alert("Signup and verification successful! You can now login.");
+      toast.success("Signup and verification successful! You can now login.");
     }
   };
 
@@ -186,6 +190,28 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-row w-full h-screen">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+          success: {
+            duration: 3000,
+            style: {
+              background: "#10B981",
+            },
+          },
+          error: {
+            duration: 5000,
+            style: {
+              background: "#EF4444",
+            },
+          },
+        }}
+      />
       <div className="w-[35%] h-full bg-primary-300 flex items-center justify-center">
         <HeaderLogo src={HEADER_LOGO_SRC} alt={"App Logo"} className="w-70" />
       </div>

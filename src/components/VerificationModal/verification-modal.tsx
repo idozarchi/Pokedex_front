@@ -50,7 +50,7 @@ export function VerificationModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <Card className="w-full max-w-md mx-4">
+      <Card className="w-full max-w-md rounded-lg mx-4">
         <CardHeader>
           <CardTitle>Verify Your Email</CardTitle>
           <CardDescription>
@@ -71,12 +71,12 @@ export function VerificationModal({
                   setError("");
                 }}
                 className={
-                  error ? "border-red-500 focus:border-red-500 m-2" : "m-2"
+                  "mb-2 " + (error ? "border-red-500 focus:border-red-500" : "")
                 }
                 maxLength={6}
                 disabled={isLoading}
               />
-              {error && <p className="text-red-500 text-sm m-2">{error}</p>}
+              {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
             </div>
           </CardContent>
 

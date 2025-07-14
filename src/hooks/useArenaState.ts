@@ -33,23 +33,32 @@ export function useArenaState({
   const [catchAttempts, setCatchAttempts] = useState(0);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    if (
-      champ1Life > 0 &&
-      champ1Life < (champion1Data.HP || 100) * 0.5 &&
+    const maxHP = champion1Data.HP || 100;
+    const hpPercent = (champ1Life / maxHP) * 100;
+
+    const canCatch =
+      hpPercent <= 30 &&
+      turn === "user" &&
+      catchAttempts < 3 &&
       !isAttacking &&
-      !showEndModal
-    ) {
-      interval = setInterval(() => {
+      !showEndModal;
+
+    if (canCatch) {
+      const interval = setInterval(() => {
         setCanCatchPokemon((tick) => tick + 1);
       }, 500);
+      return () => clearInterval(interval);
     } else {
       setCanCatchPokemon(0);
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [champ1Life, champion1Data.HP, isAttacking, showEndModal]);
+  }, [
+    champ1Life,
+    champion1Data.HP,
+    turn,
+    catchAttempts,
+    isAttacking,
+    showEndModal,
+  ]);
   useEffect(() => {
     if (champ1Life <= 0) {
       setWinner(champion2Data.name);

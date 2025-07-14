@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { signOut } from "aws-amplify/auth";
 import HeaderLogo from "./header-logo";
 import HeaderMenu from "./header-menu";
 import { Button } from "../ui/Button/button";
@@ -20,6 +21,18 @@ type HeaderProps = {
 export function Header({ items, onLogoClick }: HeaderProps) {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isOnArenaPage = location.pathname === "/arena";
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      alert("Error signing out. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -32,9 +45,18 @@ export function Header({ items, onLogoClick }: HeaderProps) {
           />
           <HeaderMenu items={items} />
         </div>
-        <Button size={"lg"} onClick={() => setShowModal(true)}>
-          Start a Fight
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            size={"lg"}
+            onClick={() => setShowModal(true)}
+            disabled={isOnArenaPage}
+          >
+            Start a Fight
+          </Button>
+          <Button size={"lg"} variant="secondary" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
       </header>
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">

@@ -46,7 +46,7 @@ const ChoosePokemonModal = ({
       <CardHeader>
         <CardTitle>Choose Your Pokémon</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto">
+      <CardContent className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-none">
         <div className="flex flex-col gap-15 items-center">
           {Array.from({ length: Math.ceil(pokemons.length / 3) }).map(
             (_, rowIdx) => (

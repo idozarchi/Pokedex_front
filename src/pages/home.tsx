@@ -16,7 +16,7 @@ const HomeContent = () => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate("/login");
+    navigate("/all-pokemons");
   };
 
   const items = [
