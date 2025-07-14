@@ -1,14 +1,26 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
-import { Card } from "./components/ui/card";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import LoginPage from "./pages/login";
+import HomePage from "./pages/home";
+import "./amplifyConfig"; // Adjust the path if needed
 
 function App() {
   return (
-    <>
-      <Button size="sm">Small</Button>
-      <Button>Default</Button>
-      <Button size="lg">Large</Button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
