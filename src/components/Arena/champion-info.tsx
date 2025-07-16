@@ -45,7 +45,7 @@ export const ChampionInfo = ({
           Speed: <span className="font-semibold">{pokemon.speed}</span>
         </span>
         <span className="font-light">
-          {(progress / 100) * maxProgress}/{maxProgress}
+          {Math.round((progress / 100) * maxProgress)}/{maxProgress}
         </span>
       </div>
     </div>

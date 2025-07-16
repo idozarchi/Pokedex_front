@@ -33,14 +33,14 @@ const ChoosePokemonModal = ({ onSelect, onClose }: ChoosePokemonModalProps) => {
   if (loading) return <div className="p-8 text-center">Loading...</div>;
 
   return (
-    <Card className="bg-white rounded-lg shadow-lg p-8 min-w-[350px] max-w-[90vw] relative">
+    <Card className="bg-white rounded-lg shadow-lg p-8 min-w-[350px] max-w-[90vw] relative max-h-[90vh] flex flex-col">
       <button onClick={onClose} className="absolute top-4 right-4">
         <ClearIcon className="cursor-pointer" />
       </button>
       <CardHeader>
         <CardTitle>Choose Your Pokémon</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-15 items-center">
           {Array.from({ length: Math.ceil(pokemons.length / 3) }).map(
             (_, rowIdx) => (

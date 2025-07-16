@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "../components/ui/Table/table";
-import { usePokemonsTable } from "../hooks/usePokemonsTable";
+import { useAllPokemonsTable } from "../hooks/useAllPokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
 import { CircularLoader } from "../components/ui/Loader/circular-loader";
 import EmptySearch from "../components/EmptySearch/empty-search";
@@ -26,7 +26,7 @@ export default function AllPokemonsPage() {
     setFilterValue,
     total,
     pagePokemons,
-  } = usePokemonsTable();
+  } = useAllPokemonsTable();
 
   return (
     <div className="p-6 bg-neutral-100 min-h-screen">
