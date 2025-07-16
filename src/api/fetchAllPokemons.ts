@@ -10,11 +10,11 @@ export async function fetchAllPokemonsFromBackend(
   search?: string
 ): Promise<{ results: Pokemon[] }> {
   const params = new URLSearchParams();
-  if (limit) params.append("limit", limit.toString());
-  if (offset) params.append("offset", offset.toString());
-  if (sort) params.append("sort", sort);
-  if (order) params.append("order", order);
-  if (search) params.append("search", search);
+  if (limit) params.set("limit", limit.toString());
+  if (offset) params.set("offset", offset.toString());
+  if (sort) params.set("sort", sort);
+  if (order) params.set("order", order);
+  if (search) params.set("search", search);
 
   const res = await fetch(`${BACKEND_URL}/all-pokemons?${params.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch Pokémon");

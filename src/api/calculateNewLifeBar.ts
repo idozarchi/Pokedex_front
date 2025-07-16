@@ -8,6 +8,5 @@ export function calculateNewLifeBar(
   const damage = Math.max(1, Math.round(baseDamage + randomFactor));
   const newLife = Math.max(0, currentLife - damage);
 
-  console.log(Math.round(newLife));
   return Math.round(newLife);
 }

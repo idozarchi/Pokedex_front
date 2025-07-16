@@ -10,7 +10,6 @@ import {
 } from "../components/ui/Table/table";
 import { useAllPokemonsTable } from "../hooks/useAllPokemonsTable";
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
-import { type Pokemon } from "../types/pokemon";
 import EmptySearch from "../components/EmptySearch/empty-search";
 
 export default function AllPokemonsPage() {
@@ -73,10 +72,7 @@ export default function AllPokemonsPage() {
             </TableRow>
           ) : (
             pagePokemons.map((pokemon) => (
-              <PokemonTableRow
-                key={(pokemon as Pokemon).id}
-                pokemon={pokemon as Pokemon}
-              />
+              <PokemonTableRow key={pokemon.id} pokemon={pokemon} />
             ))
           )}
         </TableBody>

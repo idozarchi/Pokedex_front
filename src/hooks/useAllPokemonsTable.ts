@@ -4,6 +4,7 @@ import {
   fetchAllPokemonsCount,
   fetchAllPokemonsFromBackend,
 } from "../api/fetchAllPokemons";
+import { type Pokemon } from "../types/pokemon";
 
 export function useAllPokemonsTable() {
   const [page, setPage] = useState(1);
@@ -32,7 +33,7 @@ export function useAllPokemonsTable() {
 
   // Query for paginated pokemons
   const { data: pokemonsData, isLoading: pokemonsLoading } = useQuery<
-    { results: unknown[] } | undefined
+    { results: Pokemon[] } | undefined
   >({
     queryKey: ["pokemons", page, pageSize, searchValue, filterValue],
     queryFn: () => {
@@ -57,25 +58,28 @@ export function useAllPokemonsTable() {
     queryFn: () => fetchAllPokemonsCount(),
   });
 
-  function getResults(data: unknown): unknown[] {
+  function getResults(data: { results: Pokemon[] } | undefined): Pokemon[] {
     if (
       data &&
       typeof data === "object" &&
       data !== null &&
       "results" in data
     ) {
-      // @ts-expect-error: results is expected to exist on the backend response
       return data.results;
     }
     return [];
   }
+
+  const pokemons = getResults(
+    pokemonsData as { results: Pokemon[] } | undefined
+  );
 
   return {
     page,
     setPage,
     pageSize,
     setPageSize,
-    pokemons: getResults(pokemonsData),
+    pokemons,
     loading: pokemonsLoading || totalLoading,
     searchValue,
     setSearchValue,
@@ -89,6 +93,6 @@ export function useAllPokemonsTable() {
         : typeof totalData === "number"
         ? totalData
         : 0,
-    pagePokemons: getResults(pokemonsData),
+    pagePokemons: pokemons,
   };
 }
