@@ -9,8 +9,8 @@ import {
   TableCell,
   TableCaption,
 } from "./table";
+import CircularLoader from "../CircularLoader/CircularLoader";
 import { useState, useEffect } from "react";
-import { fetchPokemons } from "../../../api/fetchPokemons";
 
 const meta: Meta<typeof Table> = {
   title: "UI/Table",
@@ -40,14 +40,6 @@ export const Default: Story = {
 
     useEffect(() => {
       setLoading(true);
-      fetchPokemons(100).then((data) => {
-        const withXP = data.results.map((p: any, i: number) => ({
-          ...p,
-          xp: 50 + ((i * 7) % 100),
-        }));
-        setPokemons(withXP);
-        setLoading(false);
-      });
     }, []);
 
     const total = pokemons.length;
@@ -70,7 +62,9 @@ export const Default: Story = {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4}>Loading...</TableCell>
+                <TableCell colSpan={4} className="text-center py-8">
+                  <CircularLoader />
+                </TableCell>
               </TableRow>
             ) : (
               pagePokemons.map((pokemon) => (

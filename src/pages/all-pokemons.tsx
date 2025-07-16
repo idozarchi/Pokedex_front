@@ -16,6 +16,7 @@ import {
 import { PokemonTableRow } from "../components/PokemonTable/PokemonTableRow";
 import { type Pokemon } from "../types/pokemon";
 import EmptySearch from "../components/EmptySearch/empty-search";
+import CircularLoader from "../components/ui/CircularLoader/CircularLoader";
 
 export default function AllPokemonsPage() {
   const {
@@ -56,53 +57,53 @@ export default function AllPokemonsPage() {
           { label: "HP (Low-High)", value: "hp-asc" },
         ]}
         filterValue={filterValue}
-        filterLabel="Sort By"
+        filterLabel="ID"
         onFilterChange={setFilterValue}
       />
-      <Table className="rounded-md overflow-hidden border border-gray-200">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="px-4 text-left">Pokemon Name</TableHead>
-            <TableHead className="px-4 text-left">ID</TableHead>
-            <TableHead className="px-4 max-w-[544px] text-left">
-              Description
-            </TableHead>
-            <TableHead className="px-4 text-left">Power Level</TableHead>
-            <TableHead className="px-4 text-left">HP Level</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading ? (
+      {loading ? (
+        <div className="flex items-center justify-center min-h-[400px] bg-white rounded-md border border-gray-200">
+          <CircularLoader />
+        </div>
+      ) : (
+        <Table className="rounded-md overflow-hidden border border-gray-200">
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={5} className="text-left">
-                Loading...
-              </TableCell>
+              <TableHead className="px-4 text-left">Pokemon Name</TableHead>
+              <TableHead className="px-4 text-left">ID</TableHead>
+              <TableHead className="px-4 max-w-[544px] text-left">
+                Description
+              </TableHead>
+              <TableHead className="px-4 text-center">Power Level</TableHead>
+              <TableHead className="px-4 text-center">HP Level</TableHead>
             </TableRow>
-          ) : pagePokemons.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={5} className="p-0 border-0">
-                <EmptySearch text="No Pokémons were found" />
-              </TableCell>
-            </TableRow>
-          ) : (
-            pagePokemons.map((pokemon) => (
-              <PokemonTableRow
-                key={(pokemon as Pokemon).id}
-                pokemon={pokemon as Pokemon}
-                owned={ownedIds.includes(pokemon.id)}
-              />
-            ))
-          )}
-        </TableBody>
-        <TableFooter
-          page={page}
-          pageSize={pageSize}
-          total={total}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          rowsPerPageOptions={[5, 10, 20, 30]}
-        />
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {pagePokemons.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="p-0 border-0">
+                  <EmptySearch text="No Pokémons were found" />
+                </TableCell>
+              </TableRow>
+            ) : (
+              pagePokemons.map((pokemon) => (
+                <PokemonTableRow
+                  key={(pokemon as Pokemon).id}
+                  pokemon={pokemon as Pokemon}
+                  owned={ownedIds.includes(pokemon.id)}
+                />
+              ))
+            )}
+          </TableBody>
+          <TableFooter
+            page={page}
+            pageSize={pageSize}
+            total={total}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            rowsPerPageOptions={[5, 10, 20, 30]}
+          />
+        </Table>
+      )}
     </div>
   );
 }

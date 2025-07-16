@@ -16,11 +16,13 @@ export const ChampionInfo = ({
   progress,
   pokemon,
   disabled = false,
+  actualMaxHP,
 }: {
   maxProgress: number;
   progress: number;
   pokemon: ChampionPokemon;
   disabled?: boolean;
+  actualMaxHP?: number;
 }) => {
   return (
     <div
@@ -45,7 +47,9 @@ export const ChampionInfo = ({
           Speed: <span className="font-semibold">{pokemon.speed}</span>
         </span>
         <span className="font-light">
-          {Math.round((progress / 100) * maxProgress)}/{maxProgress}
+          {actualMaxHP
+            ? `${Math.round((progress / 100) * actualMaxHP)}/${actualMaxHP}`
+            : `${Math.round((progress / 100) * maxProgress)}/${maxProgress}`}
         </span>
       </div>
     </div>

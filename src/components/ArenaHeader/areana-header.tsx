@@ -13,6 +13,8 @@ type ArenaHeaderProps = {
   filterTitle: string;
   filterOptions: Pokemon[];
   onPokemonChange: (pokemon: Pokemon) => void;
+  currentTurn?: "user" | "opponent";
+  isInFight?: boolean;
 };
 
 export const ArenaHeader = ({
@@ -22,6 +24,8 @@ export const ArenaHeader = ({
   filterTitle,
   filterOptions,
   onPokemonChange,
+  currentTurn = "user",
+  isInFight = false,
 }: ArenaHeaderProps) => {
   const [hasChanged, setHasChanged] = useState(false);
 
@@ -36,6 +40,9 @@ export const ArenaHeader = ({
       setHasChanged(true);
     }
   };
+
+  // Disable if already changed, or if in fight and not user's turn
+  const isDisabled = hasChanged || (isInFight && currentTurn !== "user");
 
   const filterOptionsFormatted = filterOptions.map((pokemon) => ({
     label: (
@@ -65,7 +72,7 @@ export const ArenaHeader = ({
       <p className="text-xl text-gray-600">{description}</p>
 
       <div className="flex items-start">
-        <div className={hasChanged ? "opacity-50 pointer-events-none" : ""}>
+        <div className={isDisabled ? "opacity-50 pointer-events-none" : ""}>
           <Filter
             options={filterOptionsFormatted}
             value={null}

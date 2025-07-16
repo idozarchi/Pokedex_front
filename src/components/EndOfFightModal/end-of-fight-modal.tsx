@@ -32,7 +32,7 @@ export const EndOfFightModal = ({
 }: EndOfFightModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <Card className="w-[502px] h-wrap p-6 relative">
+      <Card className="w-[502px] h-wrap p-6 relative rounded-lg">
         <button
           onClick={onReturnToMenu}
           className="absolute top-4 right-4 ml-auto"
@@ -44,7 +44,7 @@ export const EndOfFightModal = ({
             {title || "Fight Over!"} <Pokador size={23} />
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center">
+        <CardContent className="flex flex-col items-center w-full">
           <div className="mb-6">
             <Champion
               imageUrl={winnerImageUrl}
@@ -53,11 +53,11 @@ export const EndOfFightModal = ({
             />
           </div>
           {description && description.attributes.length > 0 && (
-            <div className="mb-4 w-full bg-system-background p-4">
+            <div className="mb-4 w-full bg-system-background rounded-sm p-4">
               <CardTitle className="text-lg mb-4">
                 {description.title}
               </CardTitle>
-              <CardDescription className="flex flex-row gap-9">
+              <CardDescription className="flex flex-row gap-9 ">
                 {description.attributes.map((attr) => (
                   <div className="flex flex-col space-y-1" key={attr.label}>
                     <span className="font-normal text-gray-400 mr-1 text-xs">

@@ -1,8 +1,17 @@
 import { getAuthHeaders } from "./auth";
+import type { GetFightResponse } from "./getFight";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
-export async function switchUserPokemon(fightId: string, newPokemonId: number) {
+export interface SwitchUserPokemonResponse {
+  success: boolean;
+  fight: GetFightResponse;
+}
+
+export async function switchUserPokemon(
+  fightId: string,
+  newPokemonId: number
+): Promise<SwitchUserPokemonResponse> {
   const headers = await getAuthHeaders({ "Content-Type": "application/json" });
 
   const response = await fetch(`${BACKEND_URL}/fight/switch-pokemon`, {

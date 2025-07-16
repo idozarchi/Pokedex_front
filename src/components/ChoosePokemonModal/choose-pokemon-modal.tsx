@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "../ui/Card/card";
 import { ClearIcon } from "../../assets/ClearIcon";
+import CircularLoader from "../ui/CircularLoader/CircularLoader";
 import { Button } from "../ui/Button/button";
 import { Separator } from "../ui/Separator/separator";
 
@@ -36,7 +37,13 @@ const ChoosePokemonModal = ({
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="p-8 text-center">
+        <CircularLoader />
+      </div>
+    );
+  }
 
   return (
     <Card className="bg-white rounded-lg shadow-lg p-8 min-w-[350px] max-w-[90vw] relative max-h-[90vh] flex flex-col">

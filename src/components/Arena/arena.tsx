@@ -25,12 +25,18 @@ const Arena = ({
   champion2Data,
   starter,
   fightId,
+  initialChamp1HP,
+  initialChamp2HP,
+  onTurnChange,
 }: {
   className?: string;
   champion1Data: Pokemon;
   champion2Data: Pokemon;
   starter: "user" | "opponent";
   fightId: string;
+  initialChamp1HP?: number;
+  initialChamp2HP?: number;
+  onTurnChange?: (turn: "user" | "opponent") => void;
 }) => {
   const {
     turn,
@@ -47,7 +53,15 @@ const Arena = ({
     handleCatch,
     isCatching,
     catchAnimationKey,
-  } = useArenaState({ champion1Data, champion2Data, starter, fightId });
+  } = useArenaState({
+    champion1Data,
+    champion2Data,
+    starter,
+    fightId,
+    initialChamp1HP,
+    initialChamp2HP,
+    onTurnChange,
+  });
 
   return (
     <div
@@ -59,8 +73,9 @@ const Arena = ({
       <div className="min-w-[50%] h-[50%] absolute top-0 right-0 m-2">
         <div className="absolute top-0 right-0 m-3 w-[40%]">
           <ChampionInfo
-            maxProgress={champion1Data.HP || 100}
+            maxProgress={100}
             progress={champ1Life}
+            actualMaxHP={champion1Data.HP || 100}
             pokemon={{
               name: champion1Data.name,
               speed: champion1Data.speed || 0,
@@ -70,7 +85,7 @@ const Arena = ({
         </div>
         <Champion
           imageUrl={champion1Data.image || ""}
-          className={`absolute bottom-14 left-36 ${
+          className={`absolute bottom-20 left-54 ${
             isAttacking && turn === "opponent" ? " animate-vibrate" : ""
           }${champ1Life <= 0 ? " animate-faint-right" : ""}`}
         />
@@ -82,8 +97,9 @@ const Arena = ({
       <div className="min-w-[50%] h-[50%] absolute bottom-0 left-0 m-2">
         <div className="absolute bottom-0 left-0 m-3 w-[40%]">
           <ChampionInfo
-            maxProgress={champion2Data.HP || 100}
+            maxProgress={100}
             progress={champ2Life}
+            actualMaxHP={champion2Data.HP || 100}
             pokemon={{
               name: champion2Data.name,
               speed: champion2Data.speed || 0,
@@ -93,7 +109,7 @@ const Arena = ({
         </div>
         <Champion
           imageUrl={champion2Data.image || ""}
-          className={`absolute top-14 right-36 transform scale-x-[-1] ${
+          className={`absolute top-20 right-54 transform scale-x-[-1] ${
             isAttacking && turn === "user" ? "animate-vibrate" : ""
           }${champ2Life <= 0 ? " animate-faint-right" : ""}`}
         />

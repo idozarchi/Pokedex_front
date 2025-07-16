@@ -9,15 +9,21 @@ export function useArenaState({
   champion2Data,
   starter,
   fightId,
+  initialChamp1HP,
+  initialChamp2HP,
+  onTurnChange,
 }: {
   champion1Data: Pokemon;
   champion2Data: Pokemon;
   starter: "user" | "opponent";
   fightId: string;
+  initialChamp1HP?: number;
+  initialChamp2HP?: number;
+  onTurnChange?: (turn: "user" | "opponent") => void;
 }) {
   const [turn, setTurn] = useState<"user" | "opponent">(() => starter);
-  const [champ1Life, setChamp1Life] = useState(100);
-  const [champ2Life, setChamp2Life] = useState(100);
+  const [champ1Life, setChamp1Life] = useState(initialChamp1HP ?? 100);
+  const [champ2Life, setChamp2Life] = useState(initialChamp2HP ?? 100);
   const [isAttacking, setIsAttacking] = useState(false);
   const [dialogue, setDialogue] = useState<string>(
     starter === "user"
@@ -33,11 +39,20 @@ export function useArenaState({
   const [catchAttempts, setCatchAttempts] = useState(0);
 
   useEffect(() => {
-    const maxHP = champion1Data.HP || 100;
-    const hpPercent = (champ1Life / maxHP) * 100;
+    setChamp1Life(initialChamp1HP ?? 100);
+  }, [initialChamp1HP]);
 
+  useEffect(() => {
+    setChamp2Life(initialChamp2HP ?? 100);
+  }, [initialChamp2HP]);
+
+  useEffect(() => {
+    setTurn(starter);
+  }, [starter]);
+
+  useEffect(() => {
     const canCatch =
-      hpPercent <= 30 &&
+      champ1Life <= 30 &&
       turn === "user" &&
       catchAttempts < 3 &&
       !isAttacking &&
@@ -51,14 +66,7 @@ export function useArenaState({
     } else {
       setCanCatchPokemon(0);
     }
-  }, [
-    champ1Life,
-    champion1Data.HP,
-    turn,
-    catchAttempts,
-    isAttacking,
-    showEndModal,
-  ]);
+  }, [champ1Life, turn, catchAttempts, isAttacking, showEndModal]);
   useEffect(() => {
     if (champ1Life <= 0) {
       setWinner(champion2Data.name);
@@ -88,15 +96,23 @@ export function useArenaState({
       const result = await attackApi(fightId);
       if (turn === "user") {
         setTimeout(() => {
-          setChamp1Life(result.lifebar);
+          // Convert absolute HP from backend to percentage
+          const opponentMaxHP = champion1Data.HP || 100;
+          const hpPercent = (result.lifebar / opponentMaxHP) * 100;
+          setChamp1Life(hpPercent);
           setTurn(result.turn);
+          onTurnChange?.(result.turn);
           setIsAttacking(false);
           setDialogue(`${champion1Data.name} turn`);
         }, 700);
       } else {
         setTimeout(() => {
-          setChamp2Life(result.lifebar);
+          // Convert absolute HP from backend to percentage
+          const userMaxHP = champion2Data.HP || 100;
+          const hpPercent = (result.lifebar / userMaxHP) * 100;
+          setChamp2Life(hpPercent);
           setTurn(result.turn);
+          onTurnChange?.(result.turn);
           setIsAttacking(false);
           setDialogue(`${champion2Data.name} turn`);
         }, 600);
