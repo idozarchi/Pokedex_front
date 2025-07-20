@@ -1,4 +1,4 @@
-import { signIn, signUp, confirmSignUp } from "aws-amplify/auth";
+import { signIn, signUp, confirmSignUp, deleteUser } from "aws-amplify/auth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
@@ -118,10 +118,8 @@ export async function handleSignup(
       },
     });
 
-    // Just proceed regardless of verification requirement
     console.log("Signup result:", signUpResult);
 
-    // If verification is required, call the verification callback
     if (signUpResult.nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
       if (onVerificationRequired) {
         const verifyFn = async (code: string): Promise<void> => {
@@ -132,20 +130,37 @@ export async function handleSignup(
             });
             console.log("✅ User confirmed successfully");
 
-            // Create user in database after successful verification
             if (signUpResult.userId) {
-              await createUserInDatabase(signUpResult.userId, data.email);
+              try {
+                await createUserInDatabase(signUpResult.userId, data.email);
+                console.log("✅ User created in database successfully");
+              } catch (dbError: any) {
+                console.error(
+                  "❌ Database creation failed, rolling back Cognito user"
+                );
+
+                try {
+                  await deleteUser();
+                  console.log("✅ Cognito user rolled back successfully");
+                } catch (deleteError: any) {
+                  console.error(
+                    "❌ Failed to rollback Cognito user:",
+                    deleteError
+                  );
+                }
+
+                throw new Error(
+                  "Account verification succeeded but profile setup failed. The account has been removed. Please try signing up again."
+                );
+              }
             }
 
-            // Call success callback
             onSuccess();
           } catch (error: any) {
             if (error.name === "CodeMismatchException") {
               throw new Error("Invalid verification code. Please try again.");
-            } else if (error.message?.includes("database")) {
-              throw new Error(
-                "Account verified but profile setup failed. Please contact support."
-              );
+            } else if (error.message?.includes("profile setup failed")) {
+              throw error;
             } else {
               throw new Error(error.message || "Verification failed");
             }
@@ -153,7 +168,7 @@ export async function handleSignup(
         };
 
         onVerificationRequired(data.email, verifyFn);
-        return; // Return here but verification will handle DB creation
+        return;
       } else {
         const verificationCode = prompt(
           "Please check your email and enter the verification code:"
@@ -166,6 +181,31 @@ export async function handleSignup(
               confirmationCode: verificationCode.trim(),
             });
             console.log("User confirmed successfully");
+
+            if (signUpResult.userId) {
+              try {
+                await createUserInDatabase(signUpResult.userId, data.email);
+              } catch (dbError: any) {
+                console.error(
+                  "❌ Database creation failed, rolling back Cognito user"
+                );
+
+                try {
+                  await deleteUser();
+                  console.log("✅ Cognito user rolled back successfully");
+                } catch (deleteError: any) {
+                  console.error(
+                    "❌ Failed to rollback Cognito user:",
+                    deleteError
+                  );
+                }
+
+                onError(
+                  "Account verification succeeded but profile setup failed. The account has been removed. Please try signing up again."
+                );
+                return;
+              }
+            }
           } catch (confirmError: any) {
             onError(`Verification failed: ${confirmError.message}`);
             return;
@@ -177,19 +217,29 @@ export async function handleSignup(
       }
     }
 
-    try {
-      if (signUpResult.userId) {
-        await createUserInDatabase(signUpResult.userId, data.email);
-      }
+    if (signUpResult.nextStep?.signUpStep !== "CONFIRM_SIGN_UP") {
+      try {
+        if (signUpResult.userId) {
+          await createUserInDatabase(signUpResult.userId, data.email);
+        }
 
-      alert("Signup and verification successful! You can now login.");
-      onSuccess();
-    } catch (dbError: any) {
-      console.error("Error creating user in database:", dbError);
-      onError(
-        "Account created but there was an issue setting up your profile. Please contact support if you experience issues."
-      );
-      return;
+        alert("Signup successful! You can now login.");
+        onSuccess();
+      } catch (dbError: any) {
+        console.error("❌ Database creation failed, rolling back Cognito user");
+
+        try {
+          await deleteUser();
+          console.log("✅ Cognito user rolled back successfully");
+        } catch (deleteError: any) {
+          console.error("❌ Failed to rollback Cognito user:", deleteError);
+        }
+
+        onError(
+          "Account creation succeeded but profile setup failed. The account has been removed. Please try signing up again."
+        );
+        return;
+      }
     }
   } catch (error: any) {
     let errorMessage = "Signup failed";

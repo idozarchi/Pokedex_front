@@ -30,7 +30,7 @@ export const ChampionInfo = ({
         disabled
           ? "bg-extended-gradient-disabled opacity-80"
           : "bg-extended-gradient-default"
-      } min-w-[286px] max-h-[108px] m-0 p-2 text-white rounded-sm`}
+      } min-w-[286px] max-h-[108px] m-0 p-2 text-white rounded-sm border-1 border-white`}
     >
       {disabled && (
         <div className="absolute inset-0 bg-gray-200 opacity-18 rounded-sm pointer-events-none z-10" />

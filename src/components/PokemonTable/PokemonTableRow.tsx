@@ -45,7 +45,7 @@ export function PokemonTableRow({ pokemon, owned }: PokemonTableRowProps) {
         img={pokemon.image || ""}
         description={pokemon.description || ""}
         height={pokemon.height || ""}
-        weight={pokemon.weight || ""}
+        weight={pokemon.weight + " kg" || ""}
         abilities={pokemon.abilities?.map((a) => a[0]) || []}
         category={pokemon.category || ""}
       />

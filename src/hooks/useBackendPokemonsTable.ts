@@ -2,6 +2,23 @@ import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { Pokemon } from "../types/pokemon";
 
+// Debounce hook
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 type FetchPageFn = (
   pageSize: number,
   offset: number,
@@ -20,6 +37,10 @@ export function useBackendPokemonsTable(
   const [pageSize, setPageSize] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const [filterValue, setFilterValue] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState(1);
+
+  // Debounce search value with 500ms delay
+  const debouncedSearchValue = useDebounce(searchValue, 500);
 
   const getSortParams = useCallback(() => {
     switch (filterValue) {
@@ -40,16 +61,51 @@ export function useBackendPokemonsTable(
     }
   }, [filterValue]);
 
+  // Track previous search/filter values to detect when they change
+  const [prevSearchValue, setPrevSearchValue] = useState("");
+  const [prevFilterValue, setPrevFilterValue] = useState<string | null>(null);
+
   useEffect(() => {
-    setPage(1);
-  }, [searchValue, filterValue]);
+    const searchChanged = debouncedSearchValue !== prevSearchValue;
+    const filterChanged = filterValue !== prevFilterValue;
+
+    if (searchChanged || filterChanged) {
+      if (
+        (debouncedSearchValue && !prevSearchValue) ||
+        (filterValue && !prevFilterValue)
+      ) {
+        setPreviousPage(page);
+        setPage(1);
+      } else if (
+        (!debouncedSearchValue && prevSearchValue) ||
+        (!filterValue && prevFilterValue)
+      ) {
+        if (previousPage > 1) {
+          setPage(previousPage);
+          setPreviousPage(1);
+        }
+      } else if (debouncedSearchValue || filterValue) {
+        setPage(1);
+      }
+
+      setPrevSearchValue(debouncedSearchValue);
+      setPrevFilterValue(filterValue);
+    }
+  }, [
+    debouncedSearchValue,
+    filterValue,
+    page,
+    previousPage,
+    prevSearchValue,
+    prevFilterValue,
+  ]);
 
   const {
     data: pokemonsData,
     isLoading: pokemonsLoading,
     error: pokemonsError,
   } = useQuery({
-    queryKey: ["pokemons", page, pageSize, searchValue, filterValue],
+    queryKey: ["pokemons", page, pageSize, debouncedSearchValue, filterValue],
     queryFn: () => {
       const { sort, order } = getSortParams();
       return fetchPageFn(
@@ -57,7 +113,7 @@ export function useBackendPokemonsTable(
         (page - 1) * pageSize,
         sort,
         order,
-        searchValue
+        debouncedSearchValue
       );
     },
   });
@@ -67,8 +123,8 @@ export function useBackendPokemonsTable(
     isLoading: totalLoading,
     error: totalError,
   } = useQuery({
-    queryKey: ["pokemons-count", searchValue],
-    queryFn: () => fetchCountFn(searchValue),
+    queryKey: ["pokemons-count", debouncedSearchValue],
+    queryFn: () => fetchCountFn(debouncedSearchValue),
   });
 
   function getResults(data: unknown): Pokemon[] {

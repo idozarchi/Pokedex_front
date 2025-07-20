@@ -19,6 +19,9 @@ export default function ArenaPage() {
     ? Number(params.get("userId"))
     : undefined;
   const fightId = params.get("fightId");
+  const opponentId = params.get("opponentId")
+    ? Number(params.get("opponentId"))
+    : undefined;
 
   const [currentFight, setCurrentFight] = useState<GetFightResponse | null>(
     null
@@ -54,7 +57,7 @@ export default function ArenaPage() {
           setShowPreFight(false);
           setCurrentTurn(fight.turn);
         } else if (userId) {
-          const newFight = await startFight(userId);
+          const newFight = await startFight(userId, opponentId);
 
           setCurrentFight({
             fightId: newFight.fightId,
@@ -163,11 +166,22 @@ export default function ArenaPage() {
         headline="Fighting Arena"
         description="Start fighting against your opponent to win the battle"
         className="justify-center items-center text-center mb-2"
-        filterTitle="Pokemon"
+        filterTitle={currentUser?.name || "Pokemon"}
         filterOptions={myPokemons}
         onPokemonChange={handlePokemonChange}
         currentTurn={currentTurn}
         isInFight={!showPreFight}
+        filterTooltip={
+          <div className="text-sm">
+            <div className="font-semibold mb-2">Switch Pokémon</div>
+            <p className="mb-1">
+              Select a different Pokémon to switch during battle.
+            </p>
+            <p className="text-yellow-300 font-medium">
+              ⚠️ You can only switch once per battle!
+            </p>
+          </div>
+        }
       />
       <div className="w-full h-screen">
         {showPreFight ? (

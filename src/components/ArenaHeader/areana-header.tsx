@@ -15,6 +15,7 @@ type ArenaHeaderProps = {
   onPokemonChange: (pokemon: Pokemon) => void;
   currentTurn?: "user" | "opponent";
   isInFight?: boolean;
+  filterTooltip?: React.ReactNode;
 };
 
 export const ArenaHeader = ({
@@ -26,8 +27,10 @@ export const ArenaHeader = ({
   onPokemonChange,
   currentTurn = "user",
   isInFight = false,
+  filterTooltip,
 }: ArenaHeaderProps) => {
   const [hasChanged, setHasChanged] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleFilterChange = (value: string | null) => {
     if (hasChanged || !value) return;
@@ -41,7 +44,6 @@ export const ArenaHeader = ({
     }
   };
 
-  // Disable if already changed, or if in fight and not user's turn
   const isDisabled = hasChanged || (isInFight && currentTurn !== "user");
 
   const filterOptionsFormatted = filterOptions.map((pokemon) => ({
@@ -58,7 +60,7 @@ export const ArenaHeader = ({
             </span>
           </div>
         </div>
-        <span className="font-semibold text-base">
+        <span className="font-semibold text-sm">
           Pwr. {pokemon.powerLevel ?? 0}
         </span>
       </div>
@@ -72,13 +74,25 @@ export const ArenaHeader = ({
       <p className="text-xl text-gray-600">{description}</p>
 
       <div className="flex items-start">
-        <div className={isDisabled ? "opacity-50 pointer-events-none" : ""}>
-          <Filter
-            options={filterOptionsFormatted}
-            value={null}
-            onChange={handleFilterChange}
-            label={filterTitle}
-          />
+        <div
+          className="relative"
+          onMouseEnter={() => filterTooltip && setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          <div className={isDisabled ? "opacity-50 pointer-events-none" : ""}>
+            <Filter
+              options={filterOptionsFormatted}
+              value={null}
+              onChange={handleFilterChange}
+              label={filterTitle}
+            />
+          </div>
+          {filterTooltip && showTooltip && (
+            <div className="absolute left-0 top-full mt-2 z-50 bg-gray-800 text-white text-sm rounded-md p-3 shadow-lg min-w-[250px]">
+              <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-800 rotate-45"></div>
+              {filterTooltip}
+            </div>
+          )}
         </div>
       </div>
     </div>

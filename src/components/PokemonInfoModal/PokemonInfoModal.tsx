@@ -62,13 +62,13 @@ export function PokemonInfoModal({
         />
         <CardContent>
           <CardDescription className="bg-neutral-100 p-4 rounded-sm">
-            <span className="mb-2">{description}</span>
-            <Separator className="my-4" />
-            <div className="flex flex-row space-x-5">
+            <span className="text-md mb-2">{description}</span>
+            <Separator className="my-2" />
+            <div className="flex flex-row justify-between">
               {attributes.map((attr) => (
                 <div className="flex flex-col space-y-2" key={attr.label}>
                   <span className="font-normal text-gray-400 mr-1 text-xs">
-                    {attr.label}
+                    {attr.label}:
                   </span>
                   <span>{attr.value}</span>
                 </div>

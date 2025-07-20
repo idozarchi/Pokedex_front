@@ -185,7 +185,12 @@ const Arena = ({
           <ChoosePokemonModal
             onSelect={async (pokemon) => {
               setShowChooseModal(false);
-              window.location.href = `/arena?userId=${pokemon.id}`;
+              const opponentId =
+                winner === champion1Data.name ? champion1Data.id : undefined;
+              const url = opponentId
+                ? `/arena?userId=${pokemon.id}&opponentId=${opponentId}`
+                : `/arena?userId=${pokemon.id}`;
+              window.location.href = url;
             }}
             onClose={() => setShowChooseModal(false)}
             cancelId={

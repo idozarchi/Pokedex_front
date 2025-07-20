@@ -17,7 +17,7 @@ import { Separator } from "../ui/Separator/separator";
 type ChoosePokemonModalProps = {
   onSelect: (pokemon: Pokemon) => void;
   onClose: () => void;
-  cancelId?: number; // <-- Optional prop for disabling a specific pokemon
+  cancelId?: number;
 };
 
 const ChoosePokemonModal = ({
@@ -51,7 +51,7 @@ const ChoosePokemonModal = ({
         <ClearIcon className="cursor-pointer" />
       </button>
       <CardHeader>
-        <CardTitle>Choose Your Pokémon</CardTitle>
+        <CardTitle className="text-2xl">Choose Your Pokémon</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-none">
         <div className="flex flex-col gap-15 items-center">

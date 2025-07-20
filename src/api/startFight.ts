@@ -11,17 +11,26 @@ export type StartFightResponse = {
 };
 
 export async function startFight(
-  userPokemonId: number
+  userPokemonId: number,
+  opponentId?: number
 ): Promise<StartFightResponse> {
   const headers = await getAuthHeaders({ "Content-Type": "application/json" });
 
   console.log("Starting fight with Pokemon ID:", userPokemonId);
+  console.log("Opponent ID:", opponentId);
   console.log("Auth headers:", headers ? "Present" : "Missing");
+
+  const body: { userPokemonId: number; opponentId?: number } = {
+    userPokemonId,
+  };
+  if (opponentId) {
+    body.opponentId = opponentId;
+  }
 
   const response = await fetch(`${BACKEND_URL}/fight/start`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ userPokemonId }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
