@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {
   Card,
   CardHeader,
@@ -42,7 +43,7 @@ export function PokemonInfoModal({
     { label: "Abilities", value: abilities.join(", ") },
   ];
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <Card className="max-w-[502px] w-full rounded-md">
         <CardHeader className="flex flex-col items-start w-full">
@@ -77,7 +78,8 @@ export function PokemonInfoModal({
           </CardDescription>
         </CardContent>
       </Card>
-    </div>
+    </div>,
+    document.body
   );
 }
 

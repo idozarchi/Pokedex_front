@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { handleLogin, handleSignup } from "../api/auth-handlers";
+import {
+  handleLogin,
+  handleSignup,
+  verifyAccount,
+  createUserInDatabase,
+} from "../api/auth-handlers";
 
 export type UseLoginStateReturn = {
   modalProps: any;
@@ -25,6 +30,8 @@ export function useLoginState(): UseLoginStateReturn {
   const [verificationFn, setVerificationFn] = useState<
     ((code: string) => Promise<void>) | null
   >(null);
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const navigate = useNavigate();
 
   const loginInputs = [
@@ -76,7 +83,8 @@ export function useLoginState(): UseLoginStateReturn {
   const onLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-
+    setShowResendVerification(false);
+    setUnverifiedEmail("");
     try {
       await handleLogin(
         { email, password },
@@ -87,7 +95,18 @@ export function useLoginState(): UseLoginStateReturn {
           }, 1000);
         },
         (errorMessage) => {
-          toast.error(errorMessage);
+          if (
+            errorMessage.includes("confirm your account") ||
+            errorMessage.includes("User is not confirmed")
+          ) {
+            setShowResendVerification(true);
+            setUnverifiedEmail(email);
+            toast.error(
+              "Your account is not verified. Please verify your email to continue."
+            );
+          } else {
+            toast.error(errorMessage);
+          }
         }
       );
     } finally {
@@ -124,11 +143,27 @@ export function useLoginState(): UseLoginStateReturn {
   };
 
   const handleVerification = async (code: string) => {
-    if (verificationFn) {
-      await verificationFn(code);
+    if (!verificationEmail) return;
+    try {
+      const verified = await verifyAccount(verificationEmail, code);
+      if (!verified) {
+        toast.error(
+          "Verification failed. Please check your code and try again."
+        );
+        return;
+      }
+
+      console.log("User verified successfully:", verified);
+      const userId = sessionStorage.getItem("cognitoUserId");
+      if (userId) {
+        console.log("Creating user in database with ID:", userId);
+        await createUserInDatabase(userId, verificationEmail);
+      }
       setShowVerification(false);
       setModalType("login");
-      toast.success("Signup and verification successful! You can now login.");
+      toast.success("Verification successful! You can now login.");
+    } catch (err) {
+      toast.error("Verification or profile setup failed.");
     }
   };
 
@@ -151,6 +186,27 @@ export function useLoginState(): UseLoginStateReturn {
     </div>
   );
 
+  const additionalContent = showResendVerification ? (
+    <div className="text-xs text-center text-red-500 mt-2">
+      Your account is not verified. <br />
+      <button
+        className="text-blue-500 underline mt-1"
+        type="button"
+        onClick={async () => {
+          try {
+            setVerificationEmail(unverifiedEmail);
+            setShowVerification(true);
+            toast.success("Verification code sent! Please check your email.");
+          } catch (err) {
+            toast.error("Failed to resend verification code.");
+          }
+        }}
+      >
+        Resend verification code
+      </button>
+    </div>
+  ) : null;
+
   const modalProps =
     modalType === "login"
       ? {
@@ -171,16 +227,7 @@ export function useLoginState(): UseLoginStateReturn {
               </span>
             </>
           ),
-          pText: (
-            <>
-              <span
-                className="cursor-pointer text-blue-500"
-                onClick={() => setModalType("signup")}
-              >
-                {"Forgot password?"}
-              </span>
-            </>
-          ),
+          additionalContent,
         }
       : {
           title: "Sign Up",

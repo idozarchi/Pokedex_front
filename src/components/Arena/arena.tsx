@@ -169,8 +169,7 @@ const Arena = ({
                     {
                       label: "Abilities",
                       value:
-                        champion1Data.abilities?.map((a) => a[0]).join(", ") ||
-                        "",
+                        champion1Data.abilities?.map((a) => a).join(", ") || "",
                     },
                   ],
                 }

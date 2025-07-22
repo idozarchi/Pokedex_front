@@ -71,7 +71,7 @@ export function Filter({
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent className="max-h-74" align="start">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {options.map((opt) => (

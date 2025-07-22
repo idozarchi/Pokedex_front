@@ -25,9 +25,19 @@ export async function fetchMyPokemonsFromBackend(
 
   const headers = await getAuthHeaders();
 
-  const res = await fetch(`${BACKEND_URL}/users/${targetUserId}/pokemons`, {
-    headers,
-  });
+  const params = new URLSearchParams();
+  params.append("limit", limit.toString());
+  params.append("offset", offset.toString());
+  if (sort) params.append("sort", sort);
+  if (order) params.append("order", order);
+  if (search) params.append("search", search);
+
+  const res = await fetch(
+    `${BACKEND_URL}/users/${targetUserId}/pokemons?${params.toString()}`,
+    {
+      headers,
+    }
+  );
 
   if (!res.ok) {
     let errorMsg = "Failed to fetch My Pokémons";
@@ -41,57 +51,26 @@ export async function fetchMyPokemonsFromBackend(
   }
 
   const data = await res.json();
-  let pokemons = Array.isArray(data) ? data : [];
-
-  if (search) {
-    const searchLower = search.toLowerCase();
-    pokemons = pokemons.filter(
-      (pokemon: any) =>
-        pokemon.name?.toLowerCase().includes(searchLower) ||
-        pokemon.description?.toLowerCase().includes(searchLower) ||
-        pokemon.category?.toLowerCase().includes(searchLower)
-    );
-  }
-
-  if (sort && order) {
-    pokemons.sort((a: any, b: any) => {
-      let aValue: any;
-      let bValue: any;
-
-      switch (sort) {
-        case "name":
-          aValue = a.name?.toLowerCase() || "";
-          bValue = b.name?.toLowerCase() || "";
-          break;
-        case "powerLevel":
-          aValue = a.powerLevel || 0;
-          bValue = b.powerLevel || 0;
-          break;
-        case "HP":
-          aValue = a.HP || 0;
-          bValue = b.HP || 0;
-          break;
-        default:
-          return 0;
-      }
-
-      if (aValue < bValue) return order === "asc" ? -1 : 1;
-      if (aValue > bValue) return order === "asc" ? 1 : -1;
-      return 0;
-    });
-  }
-
-  const paginatedPokemons = pokemons.slice(offset, offset + limit);
+  const pokemons = Array.isArray(data) ? data : [];
   const ownedIds = pokemons.map((pokemon: any) => pokemon.id);
 
-  return { results: paginatedPokemons, ownedIds };
+  return { results: pokemons, ownedIds };
 }
 
 export async function fetchMyPokemonsCount(search?: string): Promise<number> {
   const targetUserId = await getCurrentUserId();
 
   const headers = await getAuthHeaders();
-  const res = await fetch(`${BACKEND_URL}/users/${targetUserId}/pokemons`, {
+
+  // Build query parameters
+  const params = new URLSearchParams();
+  if (search) params.append("search", search);
+
+  const url = search
+    ? `${BACKEND_URL}/users/${targetUserId}/pokemons?${params.toString()}`
+    : `${BACKEND_URL}/users/${targetUserId}/pokemons`;
+
+  const res = await fetch(url, {
     headers,
   });
 
@@ -108,17 +87,6 @@ export async function fetchMyPokemonsCount(search?: string): Promise<number> {
 
   const data = await res.json();
   const pokemons = Array.isArray(data) ? data : [];
-
-  if (search) {
-    const searchLower = search.toLowerCase();
-    const filteredPokemons = pokemons.filter(
-      (pokemon: any) =>
-        pokemon.name?.toLowerCase().includes(searchLower) ||
-        pokemon.description?.toLowerCase().includes(searchLower) ||
-        pokemon.category?.toLowerCase().includes(searchLower)
-    );
-    return filteredPokemons.length;
-  }
 
   return pokemons.length;
 }

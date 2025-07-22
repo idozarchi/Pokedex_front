@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { Pokemon } from "../types/pokemon";
 
-// Debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
@@ -39,7 +38,6 @@ export function useBackendPokemonsTable(
   const [filterValue, setFilterValue] = useState<string | null>(null);
   const [previousPage, setPreviousPage] = useState(1);
 
-  // Debounce search value with 500ms delay
   const debouncedSearchValue = useDebounce(searchValue, 500);
 
   const getSortParams = useCallback(() => {
@@ -61,7 +59,6 @@ export function useBackendPokemonsTable(
     }
   }, [filterValue]);
 
-  // Track previous search/filter values to detect when they change
   const [prevSearchValue, setPrevSearchValue] = useState("");
   const [prevFilterValue, setPrevFilterValue] = useState<string | null>(null);
 

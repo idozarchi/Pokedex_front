@@ -2,14 +2,12 @@ interface CircularLoaderProps {
   size?: number;
   strokeWidth?: number;
   className?: string;
-  text?: string;
 }
 
 export const CircularLoader = ({
   size = 40,
   strokeWidth = 4,
   className = "",
-  text = "Loading...",
 }: CircularLoaderProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -51,7 +49,6 @@ export const CircularLoader = ({
           />
         </svg>
       </div>
-      {text && <p className="mt-2 text-sm font-medium text-gray-600">{text}</p>}
     </div>
   );
 };

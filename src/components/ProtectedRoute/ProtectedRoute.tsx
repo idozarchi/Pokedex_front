@@ -25,20 +25,17 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   };
 
-  // Show loading while checking auth
   if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <CircularLoader text="Authenticating..." />
+        <CircularLoader />
       </div>
     );
   }
 
-  // If not authenticated, return null (navigation will happen)
   if (!isAuthenticated) {
     return null;
   }
 
-  // If authenticated, render the protected content
   return <>{children}</>;
 }

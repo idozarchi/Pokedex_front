@@ -2,35 +2,6 @@ import { signIn, signUp, confirmSignUp, deleteUser } from "aws-amplify/auth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
-async function createUserInDatabase(
-  userId: string,
-  email: string
-): Promise<void> {
-  const userData = {
-    userId,
-    userName: email.split("@")[0],
-    email,
-    ownedPokemons: [25],
-    fights: [],
-  };
-
-  const response = await fetch(`${BACKEND_URL}/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to create user in database: ${response.statusText}`
-    );
-  }
-
-  console.log("User created in database successfully");
-}
-
 export type LoginData = {
   email: string;
   password: string;
@@ -119,15 +90,13 @@ export async function handleSignup(
     });
 
     console.log("Signup result:", signUpResult);
+    sessionStorage.setItem("cognitoUserId", signUpResult.userId || "");
 
     if (signUpResult.nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
       if (onVerificationRequired) {
         const verifyFn = async (code: string): Promise<void> => {
           try {
-            await confirmSignUp({
-              username: data.email,
-              confirmationCode: code,
-            });
+            await verifyAccount(data.email, code);
             console.log("✅ User confirmed successfully");
 
             if (signUpResult.userId) {
@@ -254,5 +223,44 @@ export async function handleSignup(
     }
 
     onError(errorMessage);
+  }
+}
+
+export async function createUserInDatabase(
+  userId: string,
+  email: string
+): Promise<void> {
+  const userData = {
+    userId,
+    userName: email.split("@")[0],
+    email,
+    ownedPokemons: [25],
+    fights: [],
+  };
+  console.log("Creating user in database with data:", userData);
+  console.log("Backend URL:", BACKEND_URL);
+
+  const response = await fetch(`${BACKEND_URL}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to create user in database: ${response.statusText}`
+    );
+  }
+
+  console.log("User created in database successfully");
+}
+
+export async function verifyAccount(email: string, code: string): Promise<any> {
+  try {
+    return await confirmSignUp({ username: email, confirmationCode: code });
+  } catch (err) {
+    throw new Error(`Verification failed: ${err}`);
   }
 }

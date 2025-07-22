@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import LoginPage from "./pages/login";
 import HomePage from "./pages/home";
-import "./amplifyConfig"; // Adjust the path if needed
+import "./amplifyConfig";
 
 function App() {
   return (

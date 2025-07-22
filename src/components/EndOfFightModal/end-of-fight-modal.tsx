@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -30,6 +31,13 @@ export const EndOfFightModal = ({
   title,
   description,
 }: EndOfFightModalProps) => {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <Card className="w-[502px] h-wrap p-6 relative rounded-lg">

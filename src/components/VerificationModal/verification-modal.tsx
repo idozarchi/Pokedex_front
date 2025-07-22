@@ -49,7 +49,7 @@ export function VerificationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40">
       <Card className="w-full max-w-md rounded-lg mx-4">
         <CardHeader>
           <CardTitle>Verify Your Email</CardTitle>
@@ -86,14 +86,14 @@ export function VerificationModal({
               variant="secondary"
               onClick={onCancel}
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 disabled:opacity-60 disabled:bg-gray-400"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isLoading || !code.trim()}
-              className="flex-1"
+              className="flex-1 disabled:opacity-60 disabled:bg-gray-300 disabled:text-gray-700"
             >
               {isLoading ? "Verifying..." : "Verify"}
             </Button>

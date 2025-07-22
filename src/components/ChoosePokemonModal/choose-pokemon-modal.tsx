@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchMyPokemonsFromBackend } from "../../api/fetchMyPokemons";
 import type { Pokemon } from "../../types/pokemon";
 import PokemonLogo from "../PokemonLogo/PokemonLogo";
@@ -27,15 +27,79 @@ const ChoosePokemonModal = ({
 }: ChoosePokemonModalProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [selected, setSelected] = useState<Pokemon | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  const LIMIT = 12;
 
   useEffect(() => {
-    fetchMyPokemonsFromBackend(100)
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchMyPokemonsFromBackend(LIMIT, 0, "speed", "desc")
       .then((data) => {
-        setPokemons(Array.isArray(data.results) ? data.results : []);
+        const newPokemons = Array.isArray(data.results) ? data.results : [];
+        setPokemons(newPokemons);
+        setHasMore(newPokemons.length === LIMIT);
+        setOffset(LIMIT);
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    try {
+      const data = await fetchMyPokemonsFromBackend(
+        LIMIT,
+        offset,
+        "speed",
+        "desc"
+      );
+      const newPokemons = Array.isArray(data.results) ? data.results : [];
+
+      // Filter out any duplicates based on Pokemon ID
+      const existingIds = new Set(pokemons.map((p) => p.id));
+      const uniqueNewPokemons = newPokemons.filter(
+        (pokemon) => !existingIds.has(pokemon.id)
+      );
+
+      console.log(
+        "Filtered duplicates:",
+        newPokemons.length - uniqueNewPokemons.length
+      );
+
+      setPokemons((prev) => [...prev, ...uniqueNewPokemons]);
+      setHasMore(newPokemons.length === LIMIT);
+      setOffset((prev) => prev + LIMIT);
+    } catch (error) {
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, offset]);
 
   if (loading) {
     return (
@@ -46,7 +110,7 @@ const ChoosePokemonModal = ({
   }
 
   return (
-    <Card className="bg-white rounded-lg shadow-lg p-8 min-w-[350px] max-w-[90vw] relative max-h-[90vh] flex flex-col">
+    <Card className="bg-white rounded-lg shadow-lg p-8 min-w-[500px] max-w-[90vw] relative max-h-[90vh] flex flex-col">
       <button onClick={onClose} className="absolute top-4 right-4">
         <ClearIcon className="cursor-pointer" />
       </button>
@@ -79,7 +143,7 @@ const ChoosePokemonModal = ({
                         key={pokemon.id}
                         onClick={() => !isDisabled && setSelected(pokemon)}
                         type="button"
-                        className={`flex flex-row items-center rounded-full justify-center hover:border-blue-600 transition-transform border-2 ${translateY} ${
+                        className={`flex flex-row items-center cursor-pointer rounded-full justify-center hover:border-blue-600 transition-transform border-2 ${translateY} ${
                           isSelected ? "border-blue-600" : "border-transparent"
                         }`}
                         style={{
@@ -100,6 +164,12 @@ const ChoosePokemonModal = ({
               </div>
             )
           )}
+          {loadingMore && (
+            <div className="flex justify-center py-4">
+              <CircularLoader size={32} />
+            </div>
+          )}
+          {hasMore && <div ref={observerRef} className="h-4" />}
         </div>
       </CardContent>
       <Separator />

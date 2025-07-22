@@ -137,7 +137,7 @@ export default function ArenaPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <CircularLoader text="Loading fight..." />
+        <CircularLoader />
       </div>
     );
   }
