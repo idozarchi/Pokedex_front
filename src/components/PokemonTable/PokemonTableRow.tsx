@@ -32,10 +32,10 @@ export function PokemonTableRow({ pokemon, owned }: PokemonTableRowProps) {
         >
           {pokemon.description || ""}
         </TableCell>
-        <TableCell className="px-4 text-left">
-          Power level {pokemon.powerLevel ?? ""}
+        <TableCell className="px-4 text-center">
+          {pokemon.powerLevel ?? ""}
         </TableCell>
-        <TableCell className="px-4 text-left">HP {pokemon.HP ?? ""}</TableCell>
+        <TableCell className="px-4 text-center">{pokemon.HP ?? ""}</TableCell>
       </TableRow>
       <PokemonInfoModal
         open={open}

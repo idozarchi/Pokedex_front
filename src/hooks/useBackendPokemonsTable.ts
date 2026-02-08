@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { Pokemon } from "../types/pokemon";
 
@@ -39,6 +39,10 @@ export function useBackendPokemonsTable(
         return {};
     }
   }, [filterValue]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchValue, filterValue]);
 
   const {
     data: pokemonsData,
